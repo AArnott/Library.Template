@@ -53,6 +53,15 @@ steps:
   displayName: Collecting coverage.cobertura.xml artifacts
   condition: succeededOrFailed()
 
+- powershell: |
+    Write-Host "Substituting $(System.DefaultWorkingDirectory) with {reporoot}"
+    $reports = Get-ChildItem "$(Build.ArtifactStagingDirectory)/coverageResults/coverage.cobertura.xml" -Recurse
+    $reports |% {
+        $content = Get-Content -Path $_ |% { $_ -Replace [regex]::Escape("$(System.DefaultWorkingDirectory)"), "{reporoot}" }
+        Set-Content -Path $_ -Value $content -Encoding UTF8
+    }
+  displayName: Preparing code coverage reports for merging on another machine
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: $(Build.ArtifactStagingDirectory)/coverageResults
