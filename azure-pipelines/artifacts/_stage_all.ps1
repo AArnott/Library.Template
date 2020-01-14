@@ -31,11 +31,7 @@ function Create-SymbolicLink {
     if (!(Test-Path $LinkContainer)) { mkdir $LinkContainer }
     Write-Verbose "Linking $Link to $Target"
     if ($IsMacOS -or $IsLinux) {
-        if (Get-Command ln -ErrorAction SilentlyContinue) {
-            ln $Target $Link | Out-Null
-        } else {
-            Copy-Item -Path $Target -Destination $Link
-        }
+        ln $Target $Link | Out-Null
     } else {
         cmd /c mklink $Link $Target | Out-Null
     }

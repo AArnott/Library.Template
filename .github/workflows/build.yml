@@ -49,7 +49,7 @@ jobs:
       run: azure-pipelines/variables/_pipelines.ps1
       shell: pwsh
     - name: Collect artifacts
-      run: azure-pipelines/artifacts/_stage_all.ps1
+      run: $VerbosePreference='continue' ; azure-pipelines/artifacts/_stage_all.ps1
       shell: pwsh
     - name: Upload project.assets.json files
       if: always()
