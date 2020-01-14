@@ -38,14 +38,44 @@ jobs:
         dotnet --info
       shell: pwsh
     - name: Set pipeline variables based on source
-      run: ./azure-pipelines/variables/_pipelines.ps1
+      run: azure-pipelines/variables/_pipelines.ps1
       shell: pwsh
     - name: build
-      run: dotnet build src --no-restore -c ${{ env.BuildConfiguration }} /v:m
+      run: dotnet build src --no-restore -c ${{ env.BuildConfiguration }} /v:m /bl:"bin/build_logs/build.binlog"
     - name: pack
-      run: dotnet pack src --no-build -c ${{ env.BuildConfiguration }} /v:m
+      run: dotnet pack src --no-build -c ${{ env.BuildConfiguration }} /v:m /bl:"bin/build_logs/pack.binlog"
     - name: test
-      run: dotnet test src --no-build -c ${{ env.BuildConfiguration }}
+      run: dotnet test src --no-build -c ${{ env.BuildConfiguration }} /bl:"bin/build_logs/test.binlog"
     - name: Update pipeline variables based on build outputs
-      run: ./azure-pipelines/variables/_pipelines.ps1
+      run: azure-pipelines/variables/_pipelines.ps1
       shell: pwsh
+    - name: Collect artifacts
+      run: azure-pipelines/artifacts/_stage_all.ps1
+      shell: pwsh
+    - name: Upload deployables
+      uses: actions/upload-artifact@v1
+      with:
+        name: deployables
+        path: obj/_artifacts/deployables
+    - name: Upload project.assets.json files
+      if: always()
+      uses: actions/upload-artifact@v1
+      with:
+        name: projectAssetsJson
+        path: obj/_artifacts/projectAssetsJson
+    - name: Upload symbols
+      uses: actions/upload-artifact@v1
+      with:
+        name: symbols
+        path: obj/_artifacts/symbols
+    - name: Upload variables
+      uses: actions/upload-artifact@v1
+      with:
+        name: variables
+        path: obj/_artifacts/variables
+    - name: Upload build_logs
+      if: always()
+      uses: actions/upload-artifact@v1
+      with:
+        name: build_logs
+        path: obj/_artifacts/build_logs
