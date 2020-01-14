@@ -85,3 +85,8 @@ jobs:
         name: deployables
         path: obj/_artifacts/deployables
       if: runner.os == 'Windows'
+    - name: Publish code coverage results to codecov.io
+      run: bash <(curl -s https://codecov.io/bash)
+      shell: bash
+      timeout-minutes: 3
+      continue-on-error: true
