@@ -41,11 +41,11 @@ jobs:
       run: ./azure-pipelines/variables/_pipelines.ps1
       shell: pwsh
     - name: build
-      run: dotnet build src --no-restore -c ${BuildConfiguration} /v:m
+      run: dotnet build src --no-restore -c ${{ env.BuildConfiguration }} /v:m
     - name: pack
-      run: dotnet pack src --no-build -c ${BuildConfiguration} /v:m
+      run: dotnet pack src --no-build -c ${{ env.BuildConfiguration }} /v:m
     - name: test
-      run: dotnet test src
+      run: dotnet test src --no-build -c ${{ env.BuildConfiguration }}
     - name: Update pipeline variables based on build outputs
       run: ./azure-pipelines/variables/_pipelines.ps1
       shell: pwsh
