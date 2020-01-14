@@ -6,11 +6,11 @@ param (
     [string]$ArtifactNameSuffix
 )
 
-$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot .. ..))
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot (Join-Path .. ..)))
 if ($env:BUILD_ARTIFACTSTAGINGDIRECTORY) {
     $ArtifactStagingFolder = $env:BUILD_ARTIFACTSTAGINGDIRECTORY
 } else {
-    $ArtifactStagingFolder = Join-Path $RepoRoot obj _artifacts
+    $ArtifactStagingFolder = Join-Path $RepoRoot (Join-Path obj _artifacts)
     if (Test-Path $ArtifactStagingFolder) {
         Remove-Item $ArtifactStagingFolder -Recurse -Force
     }
