@@ -55,30 +55,30 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v1
       with:
-        name: projectAssetsJson
+        name: projectAssetsJson-${{ runner.os }}
         path: obj/_artifacts/projectAssetsJson
       continue-on-error: true
     - name: Upload variables
       uses: actions/upload-artifact@v1
       with:
-        name: variables
+        name: variables-${{ runner.os }}
         path: obj/_artifacts/variables
       continue-on-error: true
     - name: Upload build_logs
       if: always()
       uses: actions/upload-artifact@v1
       with:
-        name: build_logs
+        name: build_logs-${{ runner.os }}
         path: obj/_artifacts/build_logs
       continue-on-error: true
     - name: Upload symbols
       uses: actions/upload-artifact@v1
       with:
-        name: symbols
+        name: symbols-${{ runner.os }}
         path: obj/_artifacts/symbols
       continue-on-error: true
     - name: Upload deployables
       uses: actions/upload-artifact@v1
       with:
-        name: deployables
+        name: deployables-${{ runner.os }}
         path: obj/_artifacts/deployables
