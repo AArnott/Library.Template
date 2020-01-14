@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - microbuild
+      - validate/*
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deep clone
+      run: git fetch --prune --unshallow origin HEAD
+    - name: Install tools and packages
+      run: ./init.ps1
+      shell: pwsh
+    - name: build
+      run: dotnet build src
+    - name: test
+      run: dotnet test src
