@@ -44,12 +44,12 @@ jobs:
     - name: pack
       run: dotnet pack src --no-build -c ${{ env.BUILDCONFIGURATION }} /v:m /bl:"bin/build_logs/pack.binlog"
     - name: test
-      run: dotnet test src --no-build -c ${{ env.BUILDCONFIGURATION }} /bl:"bin/build_logs/test.binlog"
+      run: dotnet test src --no-build -c ${{ env.BUILDCONFIGURATION }} /bl:"bin/build_logs/test.binlog" --filter "TestCategory!=FailsInCloudTest" -v n /p:CollectCoverage=true
     - name: Update pipeline variables based on build outputs
       run: azure-pipelines/variables/_pipelines.ps1
       shell: pwsh
     - name: Collect artifacts
-      run: $VerbosePreference='continue' ; azure-pipelines/artifacts/_stage_all.ps1
+      run: azure-pipelines/artifacts/_stage_all.ps1
       shell: pwsh
     - name: Upload project.assets.json files
       if: always()
@@ -71,6 +71,13 @@ jobs:
       with:
         name: build_logs-${{ runner.os }}
         path: obj/_artifacts/build_logs
+      continue-on-error: true
+    - name: Upload coverageResults
+      if: always()
+      uses: actions/upload-artifact@v1
+      with:
+        name: coverageResults-${{ runner.os }}
+        path: obj/_artifacts/coverageResults
       continue-on-error: true
     - name: Upload symbols
       uses: actions/upload-artifact@v1
