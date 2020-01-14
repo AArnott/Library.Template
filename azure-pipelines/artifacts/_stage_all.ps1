@@ -6,11 +6,11 @@ param (
     [string]$ArtifactNameSuffix
 )
 
-$RepoRoot = [System.IO.Path]::GetFullPath("$PSScriptRoot\..\..")
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot .. ..))
 if ($env:BUILD_ARTIFACTSTAGINGDIRECTORY) {
     $ArtifactStagingFolder = $env:BUILD_ARTIFACTSTAGINGDIRECTORY
 } else {
-    $ArtifactStagingFolder = "$RepoRoot\obj\_artifacts"
+    $ArtifactStagingFolder = Join-Path $RepoRoot obj _artifacts
     if (Test-Path $ArtifactStagingFolder) {
         Remove-Item $ArtifactStagingFolder -Recurse -Force
     }
@@ -47,7 +47,7 @@ $Artifacts |% {
 
     if (-not (Test-Path $DestinationFolder)) { New-Item -ItemType Directory -Path $DestinationFolder | Out-Null }
     if (Test-Path -PathType Leaf $_.Source) { # skip folders
-        Create-SymbolicLink -Link "$DestinationFolder\$Name" -Target $_.Source
+        Create-SymbolicLink -Link (Join-Path $DestinationFolder $Name) -Target $_.Source
     }
 }
 
