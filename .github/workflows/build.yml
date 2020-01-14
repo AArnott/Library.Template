@@ -61,8 +61,9 @@ jobs:
     - name: Upload variables
       uses: actions/upload-artifact@v1
       with:
-        name: variables-${{ runner.os }}
+        name: variables
         path: obj/_artifacts/variables
+      if: runner.os == 'Windows'
       continue-on-error: true
     - name: Upload build_logs
       if: always()
@@ -74,11 +75,13 @@ jobs:
     - name: Upload symbols
       uses: actions/upload-artifact@v1
       with:
-        name: symbols-${{ runner.os }}
+        name: symbols
         path: obj/_artifacts/symbols
+      if: runner.os == 'Windows'
       continue-on-error: true
     - name: Upload deployables
       uses: actions/upload-artifact@v1
       with:
-        name: deployables-${{ runner.os }}
+        name: deployables
         path: obj/_artifacts/deployables
+      if: runner.os == 'Windows'
