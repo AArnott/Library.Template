@@ -7,5 +7,5 @@ steps:
     signType: ${{ parameters.SignType }}
     zipSources: false
     version: '1.1.312-gf0d899cd08'
-    feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
+    feedSource: 'https://pkgs.dev.azure.com/devdiv-test/_packaging/b2f739af-dbd1-43a8-b68c-e319a274ebda/nuget/v2/'
   displayName: Install MicroBuild Signing Plugin
