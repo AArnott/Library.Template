@@ -64,6 +64,10 @@ steps:
     SearchPattern: '**/*.pdb'
     IndexSources: false
     SymbolServerType: TeamServices
+  env:
+    ArtifactServices_Symbol_AccountName: microsoft
+    ArtifactServices_Symbol_UseAAD: false
+    ArtifactServices_Symbol_PAT: $(System.AccessToken)
   displayName: Publish symbols to symbol server
   condition: eq(variables['Agent.OS'], 'Windows_NT') # Execute on failed test runs too. Windows-only till https://github.com/microsoft/azure-pipelines-tasks/issues/13821 is fixed.
 
@@ -73,6 +77,10 @@ steps:
     SearchPattern: '**/*.pdb'
     IndexSources: false
     SymbolServerType: TeamServices
+  env:
+    ArtifactServices_Symbol_AccountName: microsoft
+    ArtifactServices_Symbol_UseAAD: false
+    ArtifactServices_Symbol_PAT: $(System.AccessToken)
   displayName: Publish test symbols to symbol server
   condition: and(failed(), eq(variables['Agent.OS'], 'Windows_NT')) # Execute on failed test runs only.
 
