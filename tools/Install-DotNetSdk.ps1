@@ -149,6 +149,12 @@ if ($IsMacOS -or $IsLinux) {
     $DotNetInstallScriptPath = "$DotNetInstallScriptRoot/dotnet-install.ps1"
 }
 
+if ($IsMacOS -or $IsLinux) {
+    $DotNetInstallScriptPath = $DotNetInstallScriptPath.Replace(' ', '\ ')
+} else {
+    $DotNetInstallScriptPath = $DotNetInstallScriptPath.Replace(' ', '` ')
+}
+
 if (-not (Test-Path $DotNetInstallScriptPath)) {
     Invoke-WebRequest -Uri $DownloadUri -OutFile $DotNetInstallScriptPath -UseBasicParsing
     if ($IsMacOS -or $IsLinux) {
