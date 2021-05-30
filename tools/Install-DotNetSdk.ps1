@@ -136,7 +136,7 @@ if ($InstallLocality -eq 'machine') {
 Write-Host "Installing .NET Core SDK and runtimes to $DotNetInstallDir" -ForegroundColor Blue
 
 if ($DotNetInstallDir) {
-    $switches += '-InstallDir',$DotNetInstallDir
+    $switches += '-InstallDir',"`"$DotNetInstallDir`""
     $envVars['DOTNET_MULTILEVEL_LOOKUP'] = '0'
     $envVars['DOTNET_ROOT'] = $DotNetInstallDir
 }
