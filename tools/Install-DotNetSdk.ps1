@@ -158,7 +158,7 @@ if (-not (Test-Path $DotNetInstallScriptPath)) {
 
 # In case the script we invoke is in a directory with spaces, wrap it with single quotes.
 # In case the path includes single quotes, escape them.
-$DotNetInstallScriptPathExpression = $DotNetInstallScriptPath.Replace("'", "``'") # escape the ` because we need ` to appear in the eventual string.
+$DotNetInstallScriptPathExpression = $DotNetInstallScriptPath.Replace("'", "''")
 $DotNetInstallScriptPathExpression = "& '$DotNetInstallScriptPathExpression'"
 
 $anythingInstalled = $false
