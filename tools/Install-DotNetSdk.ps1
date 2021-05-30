@@ -149,32 +149,31 @@ if ($IsMacOS -or $IsLinux) {
     $DotNetInstallScriptPath = "$DotNetInstallScriptRoot/dotnet-install.ps1"
 }
 
-if ($IsMacOS -or $IsLinux) {
-    $DotNetInstallScriptPath = $DotNetInstallScriptPath.Replace(' ', '\ ')
-} else {
-    $DotNetInstallScriptPath = $DotNetInstallScriptPath.Replace(' ', '` ')
-}
-
 if (-not (Test-Path $DotNetInstallScriptPath)) {
     Invoke-WebRequest -Uri $DownloadUri -OutFile $DotNetInstallScriptPath -UseBasicParsing
     if ($IsMacOS -or $IsLinux) {
-        chmod +x $DotNetInstallScriptPath
+        chmod +x $DotNetInstallScriptPath.Replace(' ', '\ ')
     }
 }
+
+# In case the script we invoke is in a directory with spaces, wrap it with single quotes.
+# In case the path includes single quotes, escape them.
+$DotNetInstallScriptPathExpression = $DotNetInstallScriptPath.Replace("'", "``'") # escape the ` because we need ` to appear in the eventual string.
+$DotNetInstallScriptPathExpression = "& '$DotNetInstallScriptPathExpression'"
 
 $anythingInstalled = $false
 $global:LASTEXITCODE = 0
 
 if ($PSCmdlet.ShouldProcess(".NET Core SDK $sdkVersion", "Install")) {
     $anythingInstalled = $true
-    Invoke-Expression -Command "$DotNetInstallScriptPath -Version $sdkVersion $switches"
+    Invoke-Expression -Command "$DotNetInstallScriptPathExpression -Version $sdkVersion $switches"
 
     if ($LASTEXITCODE -ne 0) {
         Write-Error ".NET SDK installation failure: $LASTEXITCODE"
         exit $LASTEXITCODE
     }
 } else {
-    Invoke-Expression -Command "$DotNetInstallScriptPath -Version $sdkVersion $switches -DryRun"
+    Invoke-Expression -Command "$DotNetInstallScriptPathExpression -Version $sdkVersion $switches -DryRun"
 }
 
 $dotnetRuntimeSwitches = $switches + '-Runtime','dotnet'
@@ -182,14 +181,14 @@ $dotnetRuntimeSwitches = $switches + '-Runtime','dotnet'
 $runtimeVersions | Sort-Object -Unique |% {
     if ($PSCmdlet.ShouldProcess(".NET Core runtime $_", "Install")) {
         $anythingInstalled = $true
-        Invoke-Expression -Command "$DotNetInstallScriptPath -Channel $_ $dotnetRuntimeSwitches"
+        Invoke-Expression -Command "$DotNetInstallScriptPathExpression -Channel $_ $dotnetRuntimeSwitches"
 
         if ($LASTEXITCODE -ne 0) {
             Write-Error ".NET SDK installation failure: $LASTEXITCODE"
             exit $LASTEXITCODE
         }
     } else {
-        Invoke-Expression -Command "$DotNetInstallScriptPath -Channel $_ $dotnetRuntimeSwitches -DryRun"
+        Invoke-Expression -Command "$DotNetInstallScriptPathExpression -Channel $_ $dotnetRuntimeSwitches -DryRun"
     }
 }
 
@@ -198,14 +197,14 @@ $windowsDesktopRuntimeSwitches = $switches + '-Runtime','windowsdesktop'
 $windowsDesktopRuntimeVersions | Sort-Object -Unique |% {
     if ($PSCmdlet.ShouldProcess(".NET Core WindowsDesktop runtime $_", "Install")) {
         $anythingInstalled = $true
-        Invoke-Expression -Command "$DotNetInstallScriptPath -Channel $_ $windowsDesktopRuntimeSwitches"
+        Invoke-Expression -Command "$DotNetInstallScriptPathExpression -Channel $_ $windowsDesktopRuntimeSwitches"
 
         if ($LASTEXITCODE -ne 0) {
             Write-Error ".NET SDK installation failure: $LASTEXITCODE"
             exit $LASTEXITCODE
         }
     } else {
-        Invoke-Expression -Command "$DotNetInstallScriptPath -Channel $_ $windowsDesktopRuntimeSwitches -DryRun"
+        Invoke-Expression -Command "$DotNetInstallScriptPathExpression -Channel $_ $windowsDesktopRuntimeSwitches -DryRun"
     }
 }
 
