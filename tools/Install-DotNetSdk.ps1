@@ -152,7 +152,7 @@ if ($IsMacOS -or $IsLinux) {
 if (-not (Test-Path $DotNetInstallScriptPath)) {
     Invoke-WebRequest -Uri $DownloadUri -OutFile $DotNetInstallScriptPath -UseBasicParsing
     if ($IsMacOS -or $IsLinux) {
-        chmod +x $DotNetInstallScriptPath.Replace(' ', '\ ')
+        chmod +x $DotNetInstallScriptPath
     }
 }
 
