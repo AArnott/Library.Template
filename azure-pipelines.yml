@@ -15,14 +15,14 @@ parameters:
 - name: includeMacOS
   displayName: Build on macOS
   type: boolean
-  default: false # macOS is often bogged down in Azure Pipelines
+  default: true # macOS is often bogged down in Azure Pipelines
 
 variables:
   TreatWarningsAsErrors: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   BuildConfiguration: Release
-  codecov_token: 4dc9e7e2-6b01-4932-a180-847b52b43d35 # Get a new one from https://codecov.io/
-  ci_feed: CI # Azure Artifacts feed name
+  codecov_token: '708953b6-a698-4309-a352-4ac75e1a6eb6'
+  ci_feed: '0b324255-c5ad-4e3c-9200-ddfdb61c60e8/400126b2-c448-4328-a1c1-5c0a34907850'
   NUGET_PACKAGES: $(Agent.TempDirectory)/.nuget/packages
 
 jobs:

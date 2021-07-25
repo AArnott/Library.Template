@@ -1,5 +1,5 @@
 parameters:
-  windowsPool: Hosted Windows 2019 with VS2019
+  windowsPool: Local Windows
   includeMacOS:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
 
 - job: Linux
   pool:
-    vmImage: Ubuntu 20.04
+    vmImage: ubuntu-latest
   steps:
   - checkout: self
     clean: true
@@ -29,7 +29,7 @@ jobs:
 - job: macOS
   condition: ${{ parameters.includeMacOS }}
   pool:
-    vmImage: macOS-10.15
+    vmImage: macOS-latest
   steps:
   - checkout: self
     clean: true
