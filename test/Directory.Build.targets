@@ -1,5 +1,9 @@
 <Project>
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <QTestIgnoreQTestSkip>true</QTestIgnoreQTestSkip>
+    <QTestAdditionalOptions>/TestCaseFilter:"TestCategory!=QTestSkip&amp;TestCategory!=FailsInCloudTest"</QTestAdditionalOptions>
+    <QTestDirToDeploy>$(OutputPath)</QTestDirToDeploy>
+
     <CoverletOutputFormat>cobertura</CoverletOutputFormat>
     <Exclude>[xunit.*]*</Exclude>
     <!-- Ensure we preserve each coverlet output file per target framework: https://github.com/tonerdo/coverlet/issues/177 -->

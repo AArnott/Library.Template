@@ -26,6 +26,8 @@
 .PARAMETER UpgradePrerequisites
     Takes time to install prerequisites even if they are already present in case they need to be upgraded.
     No effect if -NoPrerequisites is specified.
+.PARAMETER Quickbuild
+    Installs the quickbuild tool. Only available for Microsoft internal development.
 .PARAMETER NoRestore
     Skips the package restore step.
 .PARAMETER Signing
@@ -52,6 +54,8 @@ Param (
     [switch]$NoNuGetCredProvider,
     [Parameter()]
     [switch]$UpgradePrerequisites,
+    [Parameter()]
+    [switch]$Quickbuild,
     [Parameter()]
     [switch]$NoRestore,
     [Parameter()]
@@ -84,6 +88,15 @@ if (!$NoPrerequisites) {
     if ($env:OS -eq 'Windows_NT') {
         $EnvVars['PROCDUMP_PATH'] = & "$PSScriptRoot\azure-pipelines\Get-ProcDump.ps1"
     }
+}
+
+if ($Quickbuild) {
+    if ($IsMacOS -or $IsLinux) {
+        Write-Error "Quickbuild is only available on Windows."
+        exit(1)
+    }
+    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://aka.ms/qbootstrap'))
+    $PrependPath += "$env:localappdata\CloudBuild"
 }
 
 # Workaround nuget credential provider bug that causes very unreliable package restores on Azure Pipelines

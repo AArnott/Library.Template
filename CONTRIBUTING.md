@@ -40,3 +40,9 @@ This repository can be built on Windows, Linux, and OSX.
 Building, testing, and packing this repository can be done by using the standard dotnet CLI commands (e.g. `dotnet build`, `dotnet test`, `dotnet pack`, etc.).
 
 [pwsh]: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6
+
+### Microsoft internal developers
+
+This repo is compatible with [QuickBuild][QuickBuild], which can be a quicker way to build locally.
+
+[QuickBuild]: https://eng.ms/docs/cloud-ai-platform/developer-services/one-engineering-system-1es/1es-build/quickbuild/local-builds-using-quickbuild

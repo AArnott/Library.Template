@@ -1,0 +1,14 @@
+{
+    "EnlistmentRootPaths": {
+      "SourceRootDirs": [
+        "*"
+      ],
+      "OutputRootDirs": [ "bin", "obj" ],
+      "ReleaseRootDirs": [ "bin" ],
+      "VersionGenerationMode": "SkipVersionGeneration"
+    },
+    "MSBuild": {
+      "Version": "16.11"
+    },
+    "QuickBuildArgs": "-MSBuildRestore -AnyCPU -DetectDuplicateBinplace DetectAll -UseHardlinksInCache"
+  }
