@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.Build.Traversal">
+  <ItemGroup>
+    <ProjectFile Include="src\**\*.*proj" />
+    <ProjectFile Include="test\**\*.*proj" />
+    <ProjectFile Include="VersionGeneration\VersionGeneration.proj" Condition="!Exists('obj\VersionGeneration\Release\net5.0\nbgv_versioncache.json')" />
+  </ItemGroup>
+  <Target Name="GenerateVersionInfo" AfterTargets="Restore">
+    <Message Text="Generating version" Importance="high" />
+    <MSBuild Projects="VersionGeneration\VersionGeneration.proj"
+             Properties="Configuration=Release;Platform=AnyCPU;NBGV_PreferCachedInfoOverCurrentData=true"
+             Targets="GetBuildVersion" />
+  </Target>
+</Project>

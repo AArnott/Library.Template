@@ -34,7 +34,7 @@
   <PropertyGroup Condition=" '$(QBuild)' == '1' ">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <NBGV_CacheMode>MSBuildTargetCaching</NBGV_CacheMode>
-    <NBGV_CachingProjectReference>$(MSBuildThisFileDirectory)VersionGeneration\VersionGeneration.msbuildproj</NBGV_CachingProjectReference>
+    <NBGV_CachingProjectReference>$(MSBuildThisFileDirectory)VersionGeneration\VersionGeneration.proj</NBGV_CachingProjectReference>
   </PropertyGroup>
 
   <ItemGroup>
