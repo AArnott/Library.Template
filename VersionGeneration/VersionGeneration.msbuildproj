@@ -5,4 +5,7 @@
     <SkipCopyBuildProduct>true</SkipCopyBuildProduct>
     <NBGV_CacheMode>VersionGenerationTarget</NBGV_CacheMode>
   </PropertyGroup>
+  <ItemGroup>
+    <QCustomInput Include="$(RepoRootPath)\.git\HEAD" />
+  </ItemGroup>
 </Project>
