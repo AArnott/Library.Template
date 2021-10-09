@@ -33,6 +33,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(QBuild)' == '1' ">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NBGV_CacheMode>MSBuildTargetCaching</NBGV_CacheMode>
+    <NBGV_CachingProjectReference>$(MSBuildThisFileDirectory)VersionGeneration\VersionGeneration.msbuildproj</NBGV_CachingProjectReference>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,7 +44,7 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
     <!-- <PackageReference Include="Microsoft.SourceLink.AzureRepos.Git" Version="1.0.0" PrivateAssets="All" /> -->
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.37-alpha" PrivateAssets="all" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.44-alpha-g675ac5e3b7" PrivateAssets="all" />
     <PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="all" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354" PrivateAssets="all" />
   </ItemGroup>

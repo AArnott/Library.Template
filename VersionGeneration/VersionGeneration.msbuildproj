@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.Build.NoTargets">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <SkipCopyBuildProduct>true</SkipCopyBuildProduct>
+    <NBGV_CacheMode>VersionGenerationTarget</NBGV_CacheMode>
+  </PropertyGroup>
+</Project>
