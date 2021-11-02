@@ -3,8 +3,7 @@ if ($env:AGENT_TEMPDIRECTORY) {
     $guidRegex = '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
     $files = @()
     $files += Get-ChildItem $env:AGENT_TEMPDIRECTORY -Directory |? { $_.Name -match $guidRegex } |% { Get-ChildItem "$($_.FullName)\dotnet*.dmp","$($_.FullName)\testhost*.dmp","$($_.FullName)\Sequence_*.xml" -Recurse }
-    $files += Get-ChildItem $env:AGENT_TEMPDIRECTORY\*.trx
-    Write-Host (Get-ChildItem $env:AGENT_TEMPDIRECTORY\*.trx)
+    $files += Get-ChildItem $env:AGENT_TEMPDIRECTORY\testResults\* -Rec
     Write-Host "Collected testResults: $files"
     @{
         $env:AGENT_TEMPDIRECTORY = $files;
