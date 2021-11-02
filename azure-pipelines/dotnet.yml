@@ -14,6 +14,9 @@ steps:
     testRunTitle: net472-$(Agent.JobName)
   condition: succeededOrFailed()
 
+- powershell: Get-ChildItem $env:AGENT_TEMPDIRECTORY\*.trx
+  displayName: List TRXs
+
 - task: DotNetCoreCLI@2
   displayName: dotnet test -f netcoreapp3.1
   inputs:
@@ -22,6 +25,9 @@ steps:
     testRunTitle: netcoreapp3.1-$(Agent.JobName)
   condition: succeededOrFailed()
 
+- powershell: Get-ChildItem $env:AGENT_TEMPDIRECTORY\*.trx
+  displayName: List TRXs
+
 - task: DotNetCoreCLI@2
   displayName: dotnet test -f net5.0
   inputs:
@@ -29,6 +35,9 @@ steps:
     arguments: --no-build -c $(BuildConfiguration) -f net5.0 --filter "TestCategory!=FailsInCloudTest" -v n /p:CollectCoverage=true --settings "$(Build.Repository.LocalPath)/azure-pipelines/$(Agent.OS).runsettings" /bl:"$(Build.ArtifactStagingDirectory)/build_logs/test_net5.0.binlog"
     testRunTitle: net5.0-$(Agent.JobName)
   condition: succeededOrFailed()
+
+- powershell: Get-ChildItem $env:AGENT_TEMPDIRECTORY\*.trx
+  displayName: List TRXs
 
 - powershell: azure-pipelines/variables/_pipelines.ps1
   failOnStderr: true

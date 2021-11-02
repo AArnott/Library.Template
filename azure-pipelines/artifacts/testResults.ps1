@@ -4,6 +4,7 @@ if ($env:AGENT_TEMPDIRECTORY) {
     $files = @()
     $files += Get-ChildItem $env:AGENT_TEMPDIRECTORY -Directory |? { $_.Name -match $guidRegex } |% { Get-ChildItem "$($_.FullName)\dotnet*.dmp","$($_.FullName)\testhost*.dmp","$($_.FullName)\Sequence_*.xml" -Recurse }
     $files += Get-ChildItem $env:AGENT_TEMPDIRECTORY\*.trx
+    Write-Host (Get-ChildItem $env:AGENT_TEMPDIRECTORY\*.trx)
     Write-Host "Collected testResults: $files"
     @{
         $env:AGENT_TEMPDIRECTORY = $files;
