@@ -39,6 +39,7 @@ function Create-SymbolicLink {
 
 # Stage all artifacts
 $Artifacts = & "$PSScriptRoot\_all.ps1"
+Write-Host $Artifacts
 $Artifacts |% {
     $DestinationFolder = (Join-Path (Join-Path $ArtifactStagingFolder "$($_.ArtifactName)$ArtifactNameSuffix") $_.ContainerFolder).TrimEnd('\')
     $Name = "$(Split-Path $_.Source -Leaf)"
