@@ -1,5 +1,5 @@
 parameters:
-- name: EnableAPIScan
+- name: APIScanSetting
   type: boolean
 
 steps:
@@ -28,4 +28,4 @@ steps:
 
 - template: secure-development-tools.yml
   parameters:
-    EnableAPIScan: ${{ parameters.EnableAPIScan }}
+    APIScanSetting: ${{ parameters.APIScanSetting }}

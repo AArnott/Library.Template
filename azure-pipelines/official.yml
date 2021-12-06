@@ -27,10 +27,11 @@ parameters:
   displayName: Build on macOS
   type: boolean
   default: false # macOS is often bogged down in Azure Pipelines
-- name: EnableAPIScan
+- name: APIScanSetting
   displayName: Run APIScan
-  type: boolean
-  default: true
+  type: string
+  default: 'pre-release'
+  values: [ 'pre-release', 'release', 'skip' ]
 
 variables:
   NugetSecurityAnalysisWarningLevel: none # nuget.config requires signed packages by trusted owners
@@ -49,7 +50,7 @@ stages:
   jobs:
   - template: build.yml
     parameters:
-      EnableAPIScan: ${{ parameters.EnableAPIScan }}
+      APIScanSetting: ${{ parameters.APIScanSetting }}
       windowsPool: VSEngSS-MicroBuild2022-1ES
       includeMacOS: ${{ parameters.includeMacOS }}
 

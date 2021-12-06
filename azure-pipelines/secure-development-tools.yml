@@ -1,5 +1,5 @@
 parameters:
-- name: EnableAPIScan
+- name: APIScanSetting
   type: boolean
 
 steps:
@@ -29,7 +29,7 @@ steps:
     Contents: |
       **
     TargetFolder: $(Build.ArtifactStagingDirectory)/APIScanInputs
-  condition: and(succeeded(), ${{ parameters.EnableAPIScan }}, ne(variables.ApiScanClientId, ''))
+  condition: and(succeeded(), ${{ parameters.APIScanSetting }}, ne(variables.ApiScanClientId, ''))
 
 - task: APIScan@2
   displayName: Run APIScan
@@ -37,9 +37,10 @@ steps:
     softwareFolder: $(Build.ArtifactStagingDirectory)/APIScanInputs
     softwareName: $(SymbolsFeatureName)
     softwareVersionNum: $(NBGV_MajorMinorVersion)
+    modeType: ${{ parameters.APIScanSetting }}
     isLargeApp: false
     toolVersion: Latest
-  condition: and(succeeded(), ${{ parameters.EnableAPIScan }}, ne(variables.ApiScanClientId, ''))
+  condition: and(succeeded(), ne(parameters.APIScanSetting, 'skip'), ne(variables.ApiScanClientId, ''))
   env:
     AzureServicesAuthConnectionString: runAs=App;AppId=$(ApiScanClientId);TenantId=$(ApiScanTenant);AppKey=$(ApiScanSecret)
 
