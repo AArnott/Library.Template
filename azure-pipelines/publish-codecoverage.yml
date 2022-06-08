@@ -16,12 +16,21 @@ steps:
   continueOnError: true
   condition: ${{ parameters.includeMacOS }}
 - powershell: |
+    Copy-Item -Recurse $(Pipeline.Workspace)/coverageResults-Windows/obj/* $(System.DefaultWorkingDirectory)/obj
+    Write-Host 'Substituting {reporoot} with $(System.DefaultWorkingDirectory)'
+    $reports = Get-ChildItem -Recurse '$(Pipeline.Workspace)/*.cobertura.xml'
+    $reports |% {
+        $content = Get-Content -Path $_ |% { $_.Replace('{reporoot}', '$(System.DefaultWorkingDirectory)') }
+        Set-Content -Path $_ -Value $content -Encoding UTF8
+    }
+
+    # merge all reports
     dotnet tool install --tool-path obj dotnet-coverage --version 17.3.2 --configfile azure-pipelines/justnugetorg.nuget.config
-    obj/dotnet-coverage merge "$(Pipeline.Workspace)/*.cobertura.xml" -r -o obj/Cobertura.xml -f cobertura
+    obj/dotnet-coverage merge "$(Pipeline.Workspace)/*.cobertura.xml" -r -o obj/merged.cobertura.xml -f cobertura
   displayName: ⚙ Merge coverage
 - task: PublishCodeCoverageResults@1
   displayName: 📢 Publish code coverage results to Azure DevOps
   inputs:
     codeCoverageTool: cobertura
-    summaryFileLocation: obj/Cobertura.xml
+    summaryFileLocation: obj/merged.cobertura.xml
     failIfCoverageEmpty: true
