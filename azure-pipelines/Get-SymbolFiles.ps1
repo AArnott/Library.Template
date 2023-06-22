@@ -15,7 +15,7 @@ param (
 
 $ActivityName = "Collecting symbols from $Path"
 Write-Progress -Activity $ActivityName -CurrentOperation "Discovery PDB files"
-$PDBs = Get-ChildItem -rec "$Path/*.pdb"
+$PDBs = Get-ChildItem -rec "$Path\*.pdb","$Path\*.dll","$Path\*.exe"
 
 # Filter PDBs to product OR test related.
 $testregex = "unittest|tests|\.test\."
@@ -41,26 +41,4 @@ $PDBs |% {
     } else {
         $_.FullName -notmatch $testregex
     }
-} |% {
-    # Collect the DLLs/EXEs as well.
-    $rootName = "$($_.Directory)/$($_.BaseName)"
-    if ($rootName.EndsWith('.ni')) {
-        $rootName = $rootName.Substring(0, $rootName.Length - 3)
-    }
-
-    $dllPath = "$rootName.dll"
-    $exePath = "$rootName.exe"
-    if (Test-Path $dllPath) {
-        $BinaryImagePath = $dllPath
-    } elseif (Test-Path $exePath) {
-        $BinaryImagePath = $exePath
-    } else {
-        Write-Warning "`"$_`" found with no matching binary file."
-        $BinaryImagePath = $null
-    }
-
-    if ($BinaryImagePath) {
-        Write-Output $BinaryImagePath
-        Write-Output $_.FullName
-    }
-}
+} | Select-Object -ExpandProperty FullName
