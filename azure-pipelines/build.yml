@@ -45,7 +45,6 @@ jobs:
   - ${{ if eq(variables['system.collectionId'], '011b8bdf-6d56-4f87-be0d-0092136884d9') }}:
     - template: microbuild.after.yml
       parameters:
-        EnableCompliance: ${{ parameters.EnableCompliance }}
         EnableAPIScan: ${{ parameters.EnableAPIScan }}
 
   - template: expand-template.yml
@@ -76,6 +75,16 @@ jobs:
     parameters:
       RunTests: ${{ parameters.RunTests }}
   - template: expand-template.yml
+
+- ${{ if eq(parameters.EnableCompliance, 'true') }}:
+  - job: compliance
+    displayName: Compliance
+    pool:
+      vmImage: windows-2022
+    steps:
+    - template: secure-development-tools.yml
+      parameters:
+        EnableAPIScan: ${{ parameters.EnableAPIScan }}
 
 - job: WrapUp
   dependsOn:
