@@ -1,5 +1,6 @@
-# Refer to https://hub.docker.com/_/microsoft-dotnet-sdk for available versions
-FROM mcr.microsoft.com/dotnet/sdk:7.0.302-jammy
+# Refer to https://mcr.microsoft.com/en-us/product/dotnet/sdk/tags for available versions.
+# Prefer the -cbl-mariner2.0 suffixed tags for Microsoft security policy compliance.
+FROM mcr.microsoft.com/dotnet/sdk:7.0.400-cbl-mariner2.0
 
 # Installing mono makes `dotnet test` work without errors even for net472.
 # But installing it takes a long time, so it's excluded by default.
