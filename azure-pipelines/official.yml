@@ -72,7 +72,7 @@ extends:
             windowsPool: VSEngSS-MicroBuild2022-1ES
             includeMacOS: ${{ parameters.includeMacOS }}
             RunTests: ${{ parameters.RunTests }}
-        - template: /azure-pipelines/prepare-insertion-stages.yml@self
+#        - template: /azure-pipelines/prepare-insertion-stages.yml@self
   ${{ else }}:
     template: azure-pipelines/MicroBuild.1ES.Unofficial.yml@MicroBuildTemplate
     parameters:
@@ -95,4 +95,4 @@ extends:
             windowsPool: VSEngSS-MicroBuild2022-1ES
             includeMacOS: ${{ parameters.includeMacOS }}
             RunTests: ${{ parameters.RunTests }}
-        - template: /azure-pipelines/prepare-insertion-stages.yml@self
+#        - template: /azure-pipelines/prepare-insertion-stages.yml@self
