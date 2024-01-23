@@ -24,13 +24,6 @@ jobs:
     # https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/25351/APIScan-step-by-step-guide-to-setting-up-a-Pipeline
     - group: VSCloudServices-APIScan # Expected to provide ApiScanClientId, ApiScanSecret, ApiScanTenant
   templateContext:
-    mb:
-      signing:
-        enabled: true
-        signType: $(SignType)
-        zipSources: false
-      sbom:
-        enabled: true
     outputParentDirectory: $(Build.ArtifactStagingDirectory)
     outputs:
     - output: pipelineArtifact
