@@ -26,6 +26,7 @@ jobs:
   templateContext:
     outputParentDirectory: $(Build.ArtifactStagingDirectory)
     outputs:
+    # This is useful when false positives appear so we can copy some of the output into the suppressions file.
     - output: pipelineArtifact
       displayName: 📢 Publish Guardian failures
       targetPath: $(Build.ArtifactStagingDirectory)\guardian_failures_as_suppressions
