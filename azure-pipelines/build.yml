@@ -14,6 +14,18 @@ parameters:
 - name: EnableAPIScan
   type: boolean
   default: false
+- name: artifact_names
+  type: object
+  default:
+  - build_logs
+  - coverageResults
+  - deployables
+  - projectAssetsJson
+  - symbols
+  - testResults
+  - test_symbols
+  - Variables
+  - VSInsertion
 
 jobs:
 - job: Windows
@@ -26,48 +38,17 @@ jobs:
   templateContext:
     outputParentDirectory: $(Build.ArtifactStagingDirectory)
     outputs:
+    - ${{ each artifact_name in parameters.artifact_names }}:
+      - output: pipelineArtifact
+        displayName: 📢 Publish ${{ artifact_name }}-Windows
+        targetPath: $(Build.ArtifactStagingDirectory)\${{ artifact_name }}-Windows
+        artifactName: ${{ artifact_name }}
     # This is useful when false positives appear so we can copy some of the output into the suppressions file.
     - output: pipelineArtifact
       displayName: 📢 Publish Guardian failures
       targetPath: $(Build.ArtifactStagingDirectory)\guardian_failures_as_suppressions
       artifactName: guardian_failures_as_suppressions
       condition: failed()
-    - output: pipelineArtifact
-      displayName: 📢 Publish build_logs-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\build_logs-Windows
-      artifactName: build_logs-Windows
-    - output: pipelineArtifact
-      displayName: 📢 Publish coverageResults-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\coverageResults-Windows
-      artifactName: coverageResults-Windows
-    - output: pipelineArtifact
-      displayName: 📢 Publish deployables-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\deployables-Windows
-      artifactName: deployables-Windows
-    - output: pipelineArtifact
-      displayName: 📢 Publish projectAssetsJson-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\projectAssetsJson-Windows
-      artifactName: projectAssetsJson-Windows
-    - output: pipelineArtifact
-      displayName: 📢 Publish symbols-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\symbols-Windows
-      artifactName: symbols-Windows
-    - output: pipelineArtifact
-      displayName: 📢 Publish testResults-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\testResults-Windows
-      artifactName: testResults-Windows
-    - output: pipelineArtifact
-      displayName: 📢 Publish test_symbols-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\test_symbols-Windows
-      artifactName: test_symbols-Windows
-    - output: pipelineArtifact
-      displayName: 📢 Publish Variables-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\Variables-Windows
-      artifactName: Variables-Windows
-    - output: pipelineArtifact
-      displayName: 📢 Publish VSInsertion-Windows
-      targetPath: $(Build.ArtifactStagingDirectory)\VSInsertion-Windows
-      artifactName: VSInsertion-Windows
   steps:
   - checkout: self
     fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
@@ -105,38 +86,11 @@ jobs:
   templateContext:
     outputParentDirectory: $(Build.ArtifactStagingDirectory)
     outputs:
-    - output: pipelineArtifact
-      displayName: 📢 Publish build_logs-Linux
-      targetPath: $(Build.ArtifactStagingDirectory)/build_logs-Linux
-      artifactName: build_logs-Linux
-    - output: pipelineArtifact
-      displayName: 📢 Publish coverageResults-Linux
-      targetPath: $(Build.ArtifactStagingDirectory)/coverageResults-Linux
-      artifactName: coverageResults-Linux
-    - output: pipelineArtifact
-      displayName: 📢 Publish deployables-Linux
-      targetPath: $(Build.ArtifactStagingDirectory)/deployables-Linux
-      artifactName: deployables-Linux
-    - output: pipelineArtifact
-      displayName: 📢 Publish projectAssetsJson-Linux
-      targetPath: $(Build.ArtifactStagingDirectory)/projectAssetsJson-Linux
-      artifactName: projectAssetsJson-Linux
-    - output: pipelineArtifact
-      displayName: 📢 Publish symbols-Linux
-      targetPath: $(Build.ArtifactStagingDirectory)/symbols-Linux
-      artifactName: symbols-Linux
-    - output: pipelineArtifact
-      displayName: 📢 Publish test_symbols-Linux
-      targetPath: $(Build.ArtifactStagingDirectory)/test_symbols-Linux
-      artifactName: test_symbols-Linux
-    - output: pipelineArtifact
-      displayName: 📢 Publish testResults-Linux
-      targetPath: $(Build.ArtifactStagingDirectory)/testResults-Linux
-      artifactName: testResults-Linux
-    - output: pipelineArtifact
-      displayName: 📢 Publish Variables-Linux
-      targetPath: $(Build.ArtifactStagingDirectory)/Variables-Linux
-      artifactName: Variables-Linux
+    - ${{ each artifact_name in parameters.artifact_names }}:
+      - output: pipelineArtifact
+        displayName: 📢 Publish ${{ artifact_name }}-Linux
+        targetPath: $(Build.ArtifactStagingDirectory)\${{ artifact_name }}-Linux
+        artifactName: ${{ artifact_name }}
   steps:
   - checkout: self
     fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
@@ -158,38 +112,11 @@ jobs:
   templateContext:
     outputParentDirectory: $(Build.ArtifactStagingDirectory)
     outputs:
-    - output: pipelineArtifact
-      displayName: 📢 Publish build_logs-macOS
-      targetPath: $(Build.ArtifactStagingDirectory)/build_logs-macOS
-      artifactName: build_logs-macOS
-    - output: pipelineArtifact
-      displayName: 📢 Publish coverageResults-macOS
-      targetPath: $(Build.ArtifactStagingDirectory)/coverageResults-macOS
-      artifactName: coverageResults-macOS
-    - output: pipelineArtifact
-      displayName: 📢 Publish deployables-macOS
-      targetPath: $(Build.ArtifactStagingDirectory)/deployables-macOS
-      artifactName: deployables-macOS
-    - output: pipelineArtifact
-      displayName: 📢 Publish projectAssetsJson-macOS
-      targetPath: $(Build.ArtifactStagingDirectory)/projectAssetsJson-macOS
-      artifactName: projectAssetsJson-macOS
-    - output: pipelineArtifact
-      displayName: 📢 Publish symbols-macOS
-      targetPath: $(Build.ArtifactStagingDirectory)/symbols-macOS
-      artifactName: symbols-macOS
-    - output: pipelineArtifact
-      displayName: 📢 Publish test_symbols-macOS
-      targetPath: $(Build.ArtifactStagingDirectory)/test_symbols-macOS
-      artifactName: test_symbols-macOS
-    - output: pipelineArtifact
-      displayName: 📢 Publish testResults-macOS
-      targetPath: $(Build.ArtifactStagingDirectory)/testResults-macOS
-      artifactName: testResults-macOS
-    - output: pipelineArtifact
-      displayName: 📢 Publish Variables-macOS
-      targetPath: $(Build.ArtifactStagingDirectory)/Variables-macOS
-      artifactName: Variables-macOS
+    - ${{ each artifact_name in parameters.artifact_names }}:
+      - output: pipelineArtifact
+        displayName: 📢 Publish ${{ artifact_name }}-macOS
+        targetPath: $(Build.ArtifactStagingDirectory)\${{ artifact_name }}-macOS
+        artifactName: ${{ artifact_name }}
   steps:
   - checkout: self
     fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
