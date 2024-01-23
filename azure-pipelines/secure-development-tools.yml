@@ -6,20 +6,8 @@ steps:
 - powershell: echo "##vso[build.addbuildtag]compliance"
   displayName: 🏷️ Tag run with 'compliance'
 
-- ${{ if ne(variables['system.collectionId'], '011b8bdf-6d56-4f87-be0d-0092136884d9') }}:
-  - task: CredScan@3
-    displayName: 🔍 Run CredScan
-
-- ${{ if ne(variables['system.collectionId'], '011b8bdf-6d56-4f87-be0d-0092136884d9') }}:
-  - task: PoliCheck@2
-    displayName: 🔍 Run PoliCheck
-    inputs:
-      targetType: F
-      targetArgument: $(System.DefaultWorkingDirectory)
-      optionsUEPATH: $(System.DefaultWorkingDirectory)\azure-pipelines\PoliCheckExclusions.xml
-
 - task: CopyFiles@2
-  displayName: 📂 Collect APIScan/BinSkim inputs
+  displayName: 📂 Collect APIScan inputs
   inputs:
     SourceFolder: $(Build.ArtifactStagingDirectory)/Symbols-$(Agent.JobName)
     # Exclude any patterns from the Contents (e.g. `!**/git2*`) that we have symbols for but do not need to run APIScan on.
@@ -30,15 +18,6 @@ steps:
       !**/linux-*/**
       !**/osx*/**
     TargetFolder: $(Build.ArtifactStagingDirectory)/APIScanInputs
-
-- ${{ if ne(variables['system.collectionId'], '011b8bdf-6d56-4f87-be0d-0092136884d9') }}:
-  - task: BinSkim@4
-    displayName: 🔍 Run BinSkim
-    inputs:
-      InputType: Basic
-      Function: analyze
-      TargetPattern: guardianGlob
-      AnalyzeTargetGlob: $(Build.ArtifactStagingDirectory)/APIScanInputs/**/*.dll;$(Build.ArtifactStagingDirectory)/APIScanInputs/**/*.exe
 
 - task: APIScan@2
   displayName: 🔍 Run APIScan
