@@ -42,10 +42,10 @@ jobs:
         displayName: 📢 Publish ${{ artifact_name }}-Windows
         targetPath: $(Build.ArtifactStagingDirectory)/${{ artifact_name }}-Windows
         artifactName: ${{ artifact_name }}-Windows
-      - output: pipelineArtifact
-        displayName: 📢 Publish VSInsertion-Windows
-        targetPath: $(Build.ArtifactStagingDirectory)/VSInsertion-Windows
-        artifactName: VSInsertion-Windows
+    - output: pipelineArtifact
+      displayName: 📢 Publish VSInsertion-Windows
+      targetPath: $(Build.ArtifactStagingDirectory)/VSInsertion-Windows
+      artifactName: VSInsertion-Windows
     # This is useful when false positives appear so we can copy some of the output into the suppressions file.
     - output: pipelineArtifact
       displayName: 📢 Publish Guardian failures
