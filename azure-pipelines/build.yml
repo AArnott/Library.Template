@@ -41,7 +41,7 @@ jobs:
       - output: pipelineArtifact
         displayName: 📢 Publish ${{ artifact_name }}-Windows
         targetPath: $(Build.ArtifactStagingDirectory)/${{ artifact_name }}-Windows
-        artifactName: ${{ artifact_name }}
+        artifactName: ${{ artifact_name }}-Windows
       - output: pipelineArtifact
         displayName: 📢 Publish VSInsertion-Windows
         targetPath: $(Build.ArtifactStagingDirectory)/VSInsertion-Windows
@@ -93,7 +93,7 @@ jobs:
       - output: pipelineArtifact
         displayName: 📢 Publish ${{ artifact_name }}-Linux
         targetPath: $(Build.ArtifactStagingDirectory)/${{ artifact_name }}-Linux
-        artifactName: ${{ artifact_name }}
+        artifactName: ${{ artifact_name }}-Linux
   steps:
   - checkout: self
     fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
@@ -119,7 +119,7 @@ jobs:
       - output: pipelineArtifact
         displayName: 📢 Publish ${{ artifact_name }}-macOS
         targetPath: $(Build.ArtifactStagingDirectory)/${{ artifact_name }}-macOS
-        artifactName: ${{ artifact_name }}
+        artifactName: ${{ artifact_name }}-macOS
   steps:
   - checkout: self
     fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
