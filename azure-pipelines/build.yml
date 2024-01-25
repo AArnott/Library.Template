@@ -41,12 +41,12 @@ jobs:
     - ${{ each artifact_name in parameters.artifact_names }}:
       - output: pipelineArtifact
         displayName: 📢 Publish ${{ artifact_name }}-Windows
-        targetPath: $(Build.ArtifactStagingDirectory)\${{ artifact_name }}-Windows
+        targetPath: $(Build.ArtifactStagingDirectory)/${{ artifact_name }}-Windows
         artifactName: ${{ artifact_name }}
     # This is useful when false positives appear so we can copy some of the output into the suppressions file.
     - output: pipelineArtifact
       displayName: 📢 Publish Guardian failures
-      targetPath: $(Build.ArtifactStagingDirectory)\guardian_failures_as_suppressions
+      targetPath: $(Build.ArtifactStagingDirectory)/guardian_failures_as_suppressions
       artifactName: guardian_failures_as_suppressions
       condition: failed()
   steps:
@@ -89,7 +89,7 @@ jobs:
     - ${{ each artifact_name in parameters.artifact_names }}:
       - output: pipelineArtifact
         displayName: 📢 Publish ${{ artifact_name }}-Linux
-        targetPath: $(Build.ArtifactStagingDirectory)\${{ artifact_name }}-Linux
+        targetPath: $(Build.ArtifactStagingDirectory)/${{ artifact_name }}-Linux
         artifactName: ${{ artifact_name }}
   steps:
   - checkout: self
@@ -115,7 +115,7 @@ jobs:
     - ${{ each artifact_name in parameters.artifact_names }}:
       - output: pipelineArtifact
         displayName: 📢 Publish ${{ artifact_name }}-macOS
-        targetPath: $(Build.ArtifactStagingDirectory)\${{ artifact_name }}-macOS
+        targetPath: $(Build.ArtifactStagingDirectory)/${{ artifact_name }}-macOS
         artifactName: ${{ artifact_name }}
   steps:
   - checkout: self
