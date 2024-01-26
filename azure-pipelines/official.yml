@@ -102,6 +102,15 @@ extends:
             EnableCompliance: ${{ parameters.EnableCompliance }}
             EnableAPIScan: ${{ parameters.EnableAPIScan }}
             windowsPool: VSEngSS-MicroBuild2022-1ES
+            linuxPool:
+              name: AzurePipelines-EO
+              demands:
+              - ImageOverride -equals AzurePipelinesUbuntu20.04compliantGPT
+              os: Linux
+            macOSPool:
+              name: Azure Pipelines
+              vmImage: macOS-12
+              os: macOS
             includeMacOS: ${{ parameters.includeMacOS }}
             RunTests: ${{ parameters.RunTests }}
       - template: /azure-pipelines/prepare-insertion-stages.yml@self
