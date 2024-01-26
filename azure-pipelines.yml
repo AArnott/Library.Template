@@ -29,20 +29,8 @@ variables:
   # codecov_token: 4dc9e7e2-6b01-4932-a180-847b52b43d35 # Get a new one from https://codecov.io/
   NUGET_PACKAGES: $(Agent.TempDirectory)/.nuget/packages/
 
-resources:
-  repositories:
-  - repository: MicroBuildTemplate
-    type: git
-    name: 1ESPipelineTemplates/MicroBuildTemplate
-    ref: refs/tags/release
-
-extends:
-  template: azure-pipelines/MicroBuild.1ES.Official.yml@MicroBuildTemplate
+jobs:
+- template: azure-pipelines/build.yml
   parameters:
-    stages:
-    - stage: stage
-      jobs:
-      - template: /azure-pipelines/build.yml@self
-        parameters:
-          includeMacOS: ${{ parameters.includeMacOS }}
-          RunTests: ${{ parameters.RunTests }}
+    includeMacOS: ${{ parameters.includeMacOS }}
+    RunTests: ${{ parameters.RunTests }}
