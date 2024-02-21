@@ -32,6 +32,10 @@ parameters:
   displayName: Build on macOS
   type: boolean
   default: false # macOS is often bogged down in Azure Pipelines
+- name: EnableLinuxBuild
+  displayName: Build on linux
+  type: boolean
+  default: true
 - name: RunTests
   displayName: Run tests
   type: boolean
@@ -89,6 +93,7 @@ extends:
               vmImage: macOS-12
               os: macOS
             EnableMacOSBuild: ${{ parameters.EnableMacOSBuild }}
+            EnableLinuxBuild: ${{ parameters.EnableLinuxBuild }}
             RunTests: ${{ parameters.RunTests }}
       - template: /azure-pipelines/prepare-insertion-stages.yml@self
         parameters:
@@ -123,6 +128,7 @@ extends:
               vmImage: macOS-12
               os: macOS
             EnableMacOSBuild: ${{ parameters.EnableMacOSBuild }}
+            EnableLinuxBuild: ${{ parameters.EnableLinuxBuild }}
             RunTests: ${{ parameters.RunTests }}
       - template: /azure-pipelines/prepare-insertion-stages.yml@self
         parameters:
