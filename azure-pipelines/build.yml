@@ -66,8 +66,8 @@ parameters:
   default: true
 
 - name: EnableAPIScan
-  type: boolean
-  default: false
+  type: string
+  default: 'false'
 
 # This parameter exists to provide a workaround to get a build out even when no OptProf profiling outputs can be found.
 # Entrypoint yaml files like official.yml should expose this as a queue-time setting when EnableOptProf is true in this file.
@@ -144,7 +144,7 @@ jobs:
           displayName: 📢 Publish LocBin-Windows
           targetPath: $(Build.ArtifactStagingDirectory)/LocBin-Windows
           artifactName: LocBin-Windows
-      - ${{ if parameters.EnableAPIScan }}:
+      - ${{ if ne(parameters.EnableAPIScan, 'false') }}: # 'true' and 'pipeline' should satisfy the condition
         - output: pipelineArtifact
           displayName: 📢 Publish APIScanInputs
           targetPath: $(Build.ArtifactStagingDirectory)/APIScanInputs-Windows
@@ -284,7 +284,8 @@ jobs:
           EnableLinuxBuild: ${{ parameters.EnableLinuxBuild }}
           EnableMacOSBuild: ${{ parameters.EnableMacOSBuild }}
 
-  - ${{ if parameters.EnableAPIScan }}:
-    - template: apiscan.yml
+  - ${{ if eq(parameters.EnableAPIScan, 'true') }}: # The 'pipeline' value should NOT run this job.
+    - template: apiscan_job.yml
       parameters:
-        windowsPool: ${{ parameters.windowsPool }}
+        binarySource: current
+        dependsOn: Windows
