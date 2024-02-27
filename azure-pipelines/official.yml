@@ -43,10 +43,17 @@ parameters:
   displayName: Run Compliance Tools
   type: boolean
   default: true
+# Enable in individual repos only AFTER updating TSAOptions.json with your own values
+# Allowed values:
+# - 'false': no APIScan will be run
+# - 'true': APIScan will run as part of the official pipeline
+# - 'pipeline': The official pipeline will prepare an APIScanInputs artifact but will not run APIScan itself.
+#               This is useful for running APIScan in a separate pipeline on a schedule so as to not slow down the CI pipeline.
+#               Use this in combination with the `apiscan_pipeline.yml` pipeline which you'll set up in AzDO.
 - name: EnableAPIScan
   displayName: Include APIScan with Compliance tools
-  type: boolean
-  default: false # enable in individual repos only AFTER updating TSAOptions.json with your own values
+  type: string
+  default: 'false'
 
 resources:
   repositories:
@@ -81,7 +88,8 @@ extends:
             Is1ESPT: true
             RealSign: ${{ or(parameters.RealSign, eq(variables['Build.Reason'],'Schedule')) }}
             # ShouldSkipOptimize: ${{ parameters.ShouldSkipOptimize }}
-            EnableAPIScan: ${{ and(parameters.EnableCompliance, parameters.EnableAPIScan, ne(variables['Build.Reason'], 'pullRequest')) }}
+            ${{ if and(parameters.EnableCompliance, ne(variables['Build.Reason'], 'pullRequest')) }}:
+              EnableAPIScan: ${{ parameters.EnableAPIScan }}
             windowsPool: VSEngSS-MicroBuild2022-1ES
             linuxPool:
               name: AzurePipelines-EO
@@ -114,7 +122,8 @@ extends:
             Is1ESPT: true
             RealSign: ${{ or(parameters.RealSign, eq(variables['Build.Reason'],'Schedule')) }}
             # ShouldSkipOptimize: ${{ parameters.ShouldSkipOptimize }}
-            EnableAPIScan: ${{ and(parameters.EnableCompliance, parameters.EnableAPIScan, ne(variables['Build.Reason'], 'pullRequest')) }}
+            ${{ if and(parameters.EnableCompliance, ne(variables['Build.Reason'], 'pullRequest')) }}:
+              EnableAPIScan: ${{ parameters.EnableAPIScan }}
             windowsPool: VSEngSS-MicroBuild2022-1ES
             linuxPool:
               name: AzurePipelines-EO

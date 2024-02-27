@@ -1,13 +1,25 @@
 parameters:
-- name: windowsPool
-  type: object
+- name: binarySource
+  type: string
+- name: dependsOn
+  type: string
+  default: ''
 
 jobs:
 - job: apiscan
   displayName: APIScan
-  dependsOn: Windows
-  pool: ${{ parameters.windowsPool }}
+  dependsOn: ${{ parameters.dependsOn }}
+  pool:
+    name: AzurePipelines-EO
+    image: 1ESPT-Windows2022
+    os: Windows
   timeoutInMinutes: 120
+  templateContext:
+    outputs:
+    - output: pipelineArtifact
+      displayName: 📢 collect apiscan artifact
+      targetPath: $(Pipeline.Workspace)/.gdn/.r/apiscan/001/Logs
+      artifactName: apiscan-logs
   variables:
   - name: SymbolsFeatureName
     value: $[ dependencies.Windows.outputs['SetPipelineVariables.SymbolsFeatureName'] ]
@@ -21,7 +33,7 @@ jobs:
   - checkout: self
     fetchDepth: 1
 
-  - download: current
+  - download: ${{ parameters.binarySource }}
     artifact: APIScanInputs
     displayName: 🔻 Download APIScanInputs artifact
 
@@ -42,3 +54,4 @@ jobs:
     inputs:
       GdnPublishTsaOnboard: True
       GdnPublishTsaConfigFile: $(Build.SourcesDirectory)\azure-pipelines\TSAOptions.json
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
