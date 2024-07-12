@@ -33,6 +33,8 @@ extends:
           - ImageOverride -equals 1ESPT-Ubuntu22.04
           os: Linux
         templateContext:
+          type: releaseJob
+          isProduction: true
           outputs:
           - output: nuget
             displayName: 📦 Push packages to nuget.org
