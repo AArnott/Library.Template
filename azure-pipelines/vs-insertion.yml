@@ -34,6 +34,8 @@ extends:
         pool: VSEngSS-MicroBuild2022-1ES
         templateContext:
           outputParentDirectory: $(Pipeline.Workspace)/CI
+          type: releaseJob
+          isProduction: true
         steps:
         - checkout: none
         - powershell: Write-Host "##vso[build.updatebuildnumber]$(resources.pipeline.CI.runName)"
