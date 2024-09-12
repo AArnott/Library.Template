@@ -96,6 +96,10 @@ extends:
             ShallowClone: true
         - powershell: |
             $insertionPRId = azure-pipelines/Get-InsertionPRId.ps1
+            azure-pipelines/RejectPR.ps1 -AccessToken '$(System.AccessToken)' -Verbose
+          displayName: 🚧 Reject insertion PR
+        - powershell: |
+            $insertionPRId = azure-pipelines/Get-InsertionPRId.ps1
             $Markdown = @"
             Validation insertion pull request created: !$insertionPRId
             Please check status there before proceeding to merge this PR.
