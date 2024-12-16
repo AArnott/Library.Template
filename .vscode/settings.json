@@ -20,4 +20,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": false // enable this when they conform
   },
+  "dotnet.testWindow.useTestingPlatformProtocol": true,
 }

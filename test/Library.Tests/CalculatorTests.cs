@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Library;
-using Xunit;
+using TUnit;
 
 public class CalculatorTests
 {
@@ -10,14 +10,14 @@ public class CalculatorTests
     {
     }
 
-    [Fact]
-    public void AddOrSubtract()
+    [Test]
+    public async Task AddOrSubtract()
     {
         // This tests aggregation of code coverage across test runs.
 #if NET8_0_OR_GREATER
-        Assert.Equal(3, Calculator.Add(1, 2));
+        await Assert.That(Calculator.Add(1, 2)).IsEqualTo(3);
 #else
-        Assert.Equal(-1, Calculator.Subtract(1, 2));
+        await Assert.That(Calculator.Subtract(1, 2)).IsEqualTo(-1);
 #endif
     }
 }
