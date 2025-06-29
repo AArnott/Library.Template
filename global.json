@@ -3,5 +3,8 @@
     "version": "9.0.301",
     "rollForward": "patch",
     "allowPrerelease": false
+  },
+  "msbuild-sdks": {
+    "Nerdbank.Sdk": "0.1.783-beta"
   }
 }

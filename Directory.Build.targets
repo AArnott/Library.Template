@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project>
-  <ItemGroup>
-    <!-- Avoid compile error about missing namespace when combining ImplicitUsings with .NET Framework target frameworks. -->
-    <Using Remove="System.Net.Http" Condition="'$(TargetFrameworkIdentifier)'=='.NETFramework'" />
-  </ItemGroup>
+<Project InitialTargets="VerifyNerdbankSdk">
+  <Target Name="VerifyNerdbankSdk">
+    <Error Condition="'$(UsingMicrosoftNETSdk)'=='true' and '$(UsingNerdbankSdk)'!='true'" Text='This project is not using the Nerdbank.Sdk. Please replace Sdk="Microsoft.NET.Sdk" in the project file with Sdk="Nerdbank.Sdk".' />
+  </Target>
 </Project>
