@@ -28,6 +28,9 @@ jobs:
     value: $[ dependencies.Windows.outputs['SetPipelineVariables.SymbolsFeatureName'] ]
   - name: NBGV_MajorMinorVersion
     value: $[ dependencies.Windows.outputs['nbgv.NBGV_MajorMinorVersion'] ]
+  - ${{ if eq(variables['system.collectionId'], '011b8bdf-6d56-4f87-be0d-0092136884d9') }}:
+    # https://dev.azure.com/devdiv/DevDiv/_wiki/wikis/DevDiv.wiki/25351/APIScan-step-by-step-guide-to-setting-up-a-Pipeline
+    - group: VSEng sponsored APIScan # Expected to provide ApiScanClientId
   steps:
     # We need TSAOptions.json
   - checkout: self
@@ -48,7 +51,7 @@ jobs:
       preserveLogsFolder: true
       azureSubscription: 'VSEng-APIScanSC'
     env:
-      AzureServicesAuthConnectionString: RunAs=App;AppId=d318cba7-db4d-4fb3-99e1-01879cb74e91;TenantId=72f988bf-86f1-41af-91ab-2d7cd011db47;ServiceConnectionId=93e24264-c5e6-4681-8175-ec8a41668480;
+      AzureServicesAuthConnectionString: $(APIScanAuthConnectionString)
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
   # File bugs when APIScan finds issues
