@@ -49,7 +49,7 @@ jobs:
       isLargeApp: false
       toolVersion: Latest
       preserveLogsFolder: true
-      azureSubscription: 'VSEng-APIScanSC'
+      azureSubscription: VSEng-APIScanSC
     env:
       AzureServicesAuthConnectionString: $(APIScanAuthConnectionString)
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
