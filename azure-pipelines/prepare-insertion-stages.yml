@@ -36,7 +36,7 @@ stages:
             SymbolsFeatureName: $(SymbolsFeatureName)
             SymbolsProject: VS
             SymbolsAgentPath: $(Pipeline.Workspace)/symbols-legacy
-            azureSubscription: 'Vseng-SymbolsUpload'
+            azureSubscription: Vseng-SymbolsUpload
           env:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
