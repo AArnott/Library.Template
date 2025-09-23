@@ -4,9 +4,10 @@ if (!$BuildConfiguration) {
     $BuildConfiguration = 'Debug'
 }
 
-$BasePath = (Resolve-Path "$PSScriptRoot\..\..\bin\Packages\$BuildConfiguration\Vsix").Path
+$BasePath = "$PSScriptRoot\..\..\bin\Packages\$BuildConfiguration\Vsix"
 
 if (Test-Path $BasePath) {
+    $BasePath = (Resolve-Path $BasePath).Path
     $vsmanFiles = @()
     Get-ChildItem $BasePath *.vsman -Recurse -File |% {
         $version = (Get-Content $_.FullName | ConvertFrom-Json).info.buildVersion
