@@ -47,17 +47,36 @@ if ($x86) {
 $testBinLog = Join-Path $ArtifactStagingFolder (Join-Path build_logs test.binlog)
 $testDiagLog = Join-Path $ArtifactStagingFolder (Join-Path test_logs diag.log)
 
-& $dotnet test $RepoRoot `
-    --no-build `
-    -c $Configuration `
-    --filter "TestCategory!=FailsInCloudTest" `
-    --collect "Code Coverage;Format=cobertura" `
-    --settings "$PSScriptRoot/test.runsettings" `
-    --blame-hang-timeout 60s `
-    --blame-crash `
-    -bl:"$testBinLog" `
-    --diag "$testDiagLog;TraceLevel=info" `
-    --logger trx `
+$mtp = Test-Path $RepoRoot\dotnet.config # poor man's test for MTP
+if ($mtp) {
+    & $dotnet test --directory $RepoRoot `
+        --no-build `
+        -c $Configuration `
+        -bl:"$testBinLog" `
+        --filter "TestCategory!=FailsInCloudTest" `
+        --coverage `
+        --coverage-output-format cobertura `
+        --settings "$PSScriptRoot/test.runsettings" `
+        --hangdump `
+        --hangdump-timeout 60s `
+        --crashdump `
+        --diagnostic `
+        --diagnostic-output-directory $testDiagLog `
+        --diagnostic-verbosity info `
+        --report-trx
+} else {
+    & $dotnet test $RepoRoot `
+        --no-build `
+        -c $Configuration `
+        --filter "TestCategory!=FailsInCloudTest" `
+        --collect "Code Coverage;Format=cobertura" `
+        --settings "$PSScriptRoot/test.runsettings" `
+        --blame-hang-timeout 60s `
+        --blame-crash `
+        -bl:"$testBinLog" `
+        --diag "$testDiagLog;TraceLevel=info" `
+        --logger trx `
+}
 
 $unknownCounter = 0
 Get-ChildItem -Recurse -Path $RepoRoot\test\*.trx |% {
