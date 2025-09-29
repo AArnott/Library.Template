@@ -7,26 +7,26 @@ if (!$BuildConfiguration) {
 $BasePath = "$PSScriptRoot\..\..\bin\Packages\$BuildConfiguration\Vsix"
 
 if (Test-Path $BasePath) {
-    $BasePath = (Resolve-Path $BasePath).Path
     $vsmanFiles = @()
-    Get-ChildItem $BasePath *.vsman -Recurse -File |% {
+    Get-ChildItem $BasePath *.vsman -Recurse -File | % {
         $version = (Get-Content $_.FullName | ConvertFrom-Json).info.buildVersion
         $fullPath = (Resolve-Path $_.FullName).Path
-
-        # Fallback for older PowerShell versions - use Resolve-Path to ensure consistent comparison
-        if ($fullPath.StartsWith($BasePath, [System.StringComparison]::OrdinalIgnoreCase)) {
-            $rfn = $resolvedFilePath.Substring($BasePath.Length).TrimStart('\', '/')
+        $basePath = (Resolve-Path $BasePath).Path
+        # Cannot use RelativePath or GetRelativePath due to Powershell Core v2.0 limitation
+        if ($fullPath.StartsWith($basePath, [StringComparison]::OrdinalIgnoreCase)) {
+            # Get the relative paths then make sure the directory separators match URL format.
+            $rfn = $fullPath.Substring($basePath.Length).TrimStart('\', '/').Replace('\', '/')
         }
         else {
-            # If file is not under base path, use just the filename
-            Write-Verbose "File $($_.FullName) is not under base path $BasePath, using just the filename."
-            $rfn = $_.Name
+            $rfn = $fullPath  # fallback to full path if it doesn't start with base path
         }
 
         $fn = $_.Name
-        $vsmanFiles += "$fn{$version}=https://vsdrop.corp.microsoft.com/file/v1/$vstsDropNames;$rfn"
 
+        # The left side is filename followed by the version and the right side is the drop url and the relative filename
+        $thisVsManFile = "$fn{$version}=https://vsdrop.corp.microsoft.com/file/v1/$vstsDropNames;$rfn"
+        $vsmanFiles += $thisVsManFile
     }
 
-    [string]::Join(',', $vsmanFiles)
+    [string]::join(',', $vsmanFiles)
 }
