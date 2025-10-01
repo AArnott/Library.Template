@@ -55,6 +55,7 @@ jobs:
           { "label" : "bug", "displayName" : "Fixes", "state" : "closed" },
           { "label" : "enhancement", "displayName": "Enhancements", "state" : "closed" }
         ]
+    continueOnError: true # https://developercommunity.visualstudio.com/t/GitHubRelease-task-update-broke-releases/10975854
   - script: dotnet nuget push $(Pipeline.Workspace)/CI/deployables-Windows/*.nupkg -s https://api.nuget.org/v3/index.json --api-key $(NuGetOrgApiKey) --skip-duplicate
     displayName: 📦 Push packages to nuget.org
     condition: and(succeeded(), ne(variables['NuGetOrgApiKey'], ''))
