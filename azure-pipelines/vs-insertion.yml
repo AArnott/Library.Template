@@ -27,9 +27,9 @@ extends:
       sourceAnalysisPool: VSEngSS-MicroBuild2022-1ES
 
     stages:
-    - stage: upload_payload
+    - stage: insertion
       jobs:
-      - job: upload_payload
+      - job: upload
         displayName: Upload VS payload
         pool: VSEngSS-MicroBuild2022-1ES
         templateContext:
@@ -57,23 +57,15 @@ extends:
             allowPackageConflicts: true
             publishVstsFeed: VS
 
-    - stage: insertion
-      dependsOn: upload_payload
-      condition: succeeded('upload_payload')
-      jobs:
-      - job: insertion
+      - job: insert
+        dependsOn: upload
         displayName: VS insertion
         pool: VSEngSS-MicroBuild2022-1ES
         templateContext:
           outputParentDirectory: $(Pipeline.Workspace)/CI
         steps:
         - checkout: none
-        - powershell: Write-Host "##vso[build.updatebuildnumber]$(resources.pipeline.CI.runName)"
-          displayName: ⚙️ Set pipeline name
         - template: azure-pipelines/release-deployment-prep.yml@self
-        - download: CI
-          artifact: VSInsertion-Windows
-          displayName: 🔻 Download VSInsertion-Windows artifact
         - task: MicroBuildInsertVsPayload@5
           displayName: 🏭 Insert VS Payload
           inputs:
