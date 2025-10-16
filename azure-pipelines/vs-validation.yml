@@ -68,8 +68,8 @@ extends:
     - stage: insertion
       displayName: VS insertion
       jobs:
-      - job: insertion
-        displayName: VS insertion
+      - job: upload
+        displayName: Upload VS payload
         pool: VSEngSS-MicroBuild2022-1ES
         steps:
         - checkout: self
@@ -97,6 +97,20 @@ extends:
             packageParentPath: $(Pipeline.Workspace)/VSInsertion-Windows
             allowPackageConflicts: true
             publishVstsFeed: VS
+
+      - job: insertion
+        displayName: VS insertion
+        dependsOn: upload
+        pool: VSEngSS-MicroBuild2022-1ES
+        steps:
+        - checkout: self
+          clean: true
+          fetchDepth: 1
+        - download: current
+          artifact: Variables-Windows
+          displayName: 🔻 Download Variables-Windows artifact
+        - powershell: $(Pipeline.Workspace)/Variables-Windows/_define.ps1
+          displayName: ⚙️ Set pipeline variables based on artifacts
         - task: MicroBuildInsertVsPayload@5
           displayName: 🏭 Insert VS Payload
           inputs:
