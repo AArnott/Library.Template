@@ -12,7 +12,9 @@ on:
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   BUILDCONFIGURATION: Release
-  # codecov_token: 4dc9e7e2-6b01-4932-a180-847b52b43d35 # Get a new one from https://codecov.io/
+  # Set the CODECOV_TOKEN secret in your GitHub repository settings to enable code coverage reporting
+  # Get a token from https://codecov.io/
+  codecov_token: ${{ secrets.CODECOV_TOKEN }}
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages/
 
 jobs:
