@@ -63,11 +63,13 @@ jobs:
       uses: ./.github/actions/publish-artifacts
       if: cancelled() == false
     - name: 📢 Publish code coverage results to codecov.io
-      run: ./tools/publish-CodeCov.ps1 -CodeCovToken "${{ secrets.CODECOV_TOKEN }}" -PathToCodeCoverage "${{ runner.temp }}/_artifacts/coverageResults" -Name "${{ runner.os }} Coverage Results" -Flags "${{ runner.os }}"
+      run: |
+        if ('${{ secrets.CODECOV_TOKEN }}') {
+          ./tools/publish-CodeCov.ps1 -CodeCovToken '${{ secrets.CODECOV_TOKEN }}' -PathToCodeCoverage "${{ runner.temp }}/_artifacts/coverageResults" -Name "${{ runner.os }} Coverage Results" -Flags "${{ runner.os }}"
+        }
       shell: pwsh
       timeout-minutes: 3
       continue-on-error: true
-      if: ${{ secrets.CODECOV_TOKEN != '' }}
 
   docs:
     name: 📃 Docs
