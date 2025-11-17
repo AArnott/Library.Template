@@ -67,7 +67,7 @@ jobs:
       shell: pwsh
       timeout-minutes: 3
       continue-on-error: true
-      if: secrets.CODECOV_TOKEN != ''
+      if: secrets.CODECOV_TOKEN
 
   docs:
     name: 📃 Docs
