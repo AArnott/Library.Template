@@ -26,9 +26,7 @@ parameters:
 variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   BuildConfiguration: Release
-  # Set the codecov_token variable in your Azure Pipeline to enable code coverage reporting
-  # Get a token from https://codecov.io/
-  codecov_token: $(CODECOV_TOKEN)
+  # codecov_token: 4dc9e7e2-6b01-4932-a180-847b52b43d35 # Get a new one from https://codecov.io/
   ci_feed: https://pkgs.dev.azure.com/andrewarnott/_packaging/CI/nuget/v3/index.json # Azure Artifacts feed URL
   NUGET_PACKAGES: $(Agent.TempDirectory)/.nuget/packages/
 
