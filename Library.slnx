@@ -1,4 +1,5 @@
 <Solution>
+  <Folder Name="/docs/" />
   <Folder Name="/Solution Items/">
     <File Path=".config/dotnet-tools.json" />
     <File Path=".editorconfig" />
@@ -21,6 +22,18 @@
     <File Path="test/Directory.Build.props" />
     <File Path="test/Directory.Build.targets" />
   </Folder>
-  <Project Path="src/Library/Library.csproj" />
-  <Project Path="test/Library.Tests/Library.Tests.csproj" />
+  <Folder Name="/src/">
+    <File Path="src/.editorconfig" />
+    <File Path="src/AssemblyInfo.cs" />
+    <File Path="src/AssemblyInfo.vb" />
+    <File Path="src/Directory.Build.props" />
+    <File Path="src/Directory.Build.targets" />
+  </Folder>
+  <Folder Name="/src/core/">
+    <Project Path="src/core/NetworkVisor.Core/NetworkVisor.Core.csproj" />
+  </Folder>
+  <Folder Name="/src/platform/" />
+  <Folder Name="/src/shared/" />
+  <Folder Name="/test/" />
+  <Folder Name="/test/shared/" />
 </Solution>

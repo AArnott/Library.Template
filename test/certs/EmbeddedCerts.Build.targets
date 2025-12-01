@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  
+  <ItemGroup>
+    <!--<EmbeddedResource Include="$(RepoRootPath)\test\certs\SectigoRSADomainValidationCA.cer" >
+      <LogicalName>Certs.SectigoRSADomainValidationCA</LogicalName>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>-->
+
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>1a90603f-ef1e-4d08-a85e-a1609c334d7c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NetworkVisor.Platform.Test.Shared.Tests</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\CoreTestAssemblyFixture.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fixtures\CoreTestClassFixture.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestCase\CoreEntityTestCaseBase.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestCase\CoreSchedulingTestCaseBase.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestCase\CoreTestCaseBase.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestDevices\CoreTestLocalNetworkDevice.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestDevices\CoreTestNetworkDevice.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestEntities\CoreTestEntityConstants.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestObjects\CoreTestObject.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestObjects\CoreTestSerializableObject.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestServices\CoreTestNetworkAgentBackgroundService.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestServices\ICoreTestNetworkAgentBackgroundService.shared.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestStartup\CoreTestStartupServices.shared.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Fixtures\" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
+    <PackageReference Include="NetworkVisor.Platform.MacCatalyst" />
+    <PackageReference Include="NetworkVisor.Platform.MacCatalyst.TestUtils" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+    <PackageReference Include="NetworkVisor.Platform.IOS" />
+    <PackageReference Include="NetworkVisor.Platform.IOS.TestUtils" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <PackageReference Include="NetworkVisor.Platform.Android" />
+    <PackageReference Include="NetworkVisor.Platform.Android.TestUtils" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
+    <PackageReference Include="NetworkVisor.Platform.WinUI"  />
+    <PackageReference Include="NetworkVisor.Platform.WinUI.TestUtils"  />
+  </ItemGroup>
+  
+</Project>

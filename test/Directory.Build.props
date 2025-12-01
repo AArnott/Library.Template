@@ -5,6 +5,20 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- TODO: Remove after fixing all test cancellation tokens -->
+    <NoWarn>$(NoWarn);xUnit1051</NoWarn>
   </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration.StartsWith('Debug'))">
+    <CreatePackage>false</CreatePackage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="$(RepoRootPath)\test\xunit.runner.json" CopyToOutputDirectory="PreserveNewest" Pack="false" />
+  </ItemGroup>
 
 </Project>

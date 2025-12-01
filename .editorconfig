@@ -185,8 +185,17 @@ dotnet_diagnostic.DOC202.severity = warning
 # CA1062: Validate arguments of public methods
 dotnet_diagnostic.CA1062.severity = warning
 
+# Fix documentation issues
+dotnet_diagnostic.SA1309.severity = suggestion
+dotnet_diagnostic.SA1614.severity = suggestion
+dotnet_diagnostic.SA1649.severity = suggestion
+
 # CA2016: Forward the CancellationToken parameter
 dotnet_diagnostic.CA2016.severity = warning
 
 [*.sln]
 indent_style = tab
+
+# NetworkVisor overrides
+# IDE0057: Use range operator
+csharp_style_prefer_range_operator = false

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <!-- App Sandbox must be enabled to distribute a MacOS app through the Mac App Store. -->
+    <key>com.apple.security.app-sandbox</key>
+    <true/>
+    <!-- When App Sandbox is enabled, this value is required to open outgoing network connections. -->
+    <key>com.apple.security.network.client</key>
+    <true/>
+    <key>com.apple.security.network.server</key>
+    <true/>
+    <key>com.apple.developer.media-device-discovery-extension</key>
+    <true/>
+    <key>keychain-access-groups</key>
+    <array>
+      <string>D544TWJP3J.com.NetworkVisor.Shared.*</string>
+      <string>D544TWJP3J.com.NetworkVisor.Platform.Test.*</string>
+    </array>
+    <key>com.apple.developer.networking.multicast</key>
+    <true/>
+  </dict>
+</plist>

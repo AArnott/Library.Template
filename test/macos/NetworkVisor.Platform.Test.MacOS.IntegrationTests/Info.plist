@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- The Mac App Store requires you specify if the app uses encryption. -->
+    <!-- Please consult https://developer.apple.com/documentation/bundleresources/information_property_list/itsappusesnonexemptencryption -->
+    <key>ITSAppUsesNonExemptEncryption</key>
+        <false/>
+
+    <!-- Specify the category for your app here. -->
+    <!-- Please consult https://developer.apple.com/documentation/bundleresources/information_property_list/lsapplicationcategorytype -->
+    <key>LSApplicationCategoryType</key>
+        <string>public.app-category.developer-tools</string>
+
+    <key>CFBundleName</key>
+	    <string>MacOS IntegrationTests</string>
+	<key>CFBundleIdentifier</key>
+	    <string>com.NetworkVisor.Platform.Test.MacOS.IntegrationTests</string>
+	<key>CFBundleShortVersionString</key>
+	    <string>1.0</string>
+	<key>CFBundleVersion</key>
+	    <string>1</string>
+	<key>CFBundleDevelopmentRegion</key>
+	    <string>en</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	    <string>6.0</string>
+	<key>CFBundlePackageType</key>
+	    <string>APPL</string>
+	<key>CFBundleSignature</key>
+	    <string>????</string>
+	<key>NSHumanReadableCopyright</key>
+	    <string>${AuthorCopyright:HtmlEncode}</string>
+	<key>NSPrincipalClass</key>
+	    <string>NSApplication</string>
+	<key>NSMainStoryboardFile</key>
+	    <string>Main</string>
+	<key>XSAppIconAssets</key>
+	    <string>Assets.xcassets/AppIcon.appiconset</string>
+
+    <key>NSAppTransportSecurity</key>
+        <dict>
+        <!-- Include to allow all connections; avoid if possible -->
+        <key>NSAllowsArbitraryLoads</key>
+            <true/>
+        <key>NSAllowsLocalNetworking</key>
+            <true/>
+        <key>NSExceptionDomains</key>
+            <dict>
+                <key>127.0.0.1</key>
+                    <dict>
+                        <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                        <true/>
+                        <key>NSAllowsArbitraryLoads</key>
+                        <true/>
+                        <key>NSAllowsLocalNetworking</key>
+                        <true/>
+                    </dict>
+                <key>localhost</key>
+                    <dict>
+                        <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                        <true/>
+                        <key>NSAllowsArbitraryLoads</key>
+                        <true/>
+                        <key>NSAllowsLocalNetworking</key>
+                        <true/>
+                    </dict>
+            </dict>
+        </dict>
+
+    <key>NSLocationWhenInUseUsageDescription</key>
+        <string>Access to your location is required to locate other devices.</string>
+    <key>NSLocalNetworkUsageDescription</key>
+        <string>Access to your local network is required to locate other devices.</string>
+    <key>NSLocationTemporaryUsageDescriptionDictionary</key>
+        <dict>
+          <key>TemporaryFullAccuracyUsageDescription</key>
+          <string>Access to your accurate location is required to locate other devices.</string>
+        </dict>
+</dict>
+</plist>

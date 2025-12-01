@@ -1,8 +1,20 @@
+parameters:
+  includeMacOS:
+
 steps:
 - download: current
-  displayName: 🔻 Download deployables
+  displayName: 🔻 Download Windows deployables
   artifact: deployables-Windows
 
 - powershell: dotnet nuget push "$(Resolve-Path '$(Pipeline.Workspace)\deployables-Windows\')*.nupkg" -s $(ci_feed) -k azdo --skip-duplicate
-  displayName: 📦 Push packages to CI feed
+  displayName: 📦 Push Windows packages to CI feed
   condition: and(succeeded(), ne(variables['ci_feed'], ''), ne(variables['Build.Reason'], 'PullRequest'))
+
+- download: current
+  displayName: 🔻 Download MacOS deployables
+  artifact: deployables-macOS
+  condition: ${{ parameters.includeMacOS }}
+
+- powershell: dotnet nuget push "$(Resolve-Path '$(Pipeline.Workspace)\deployables-MacOS\')*.nupkg" -s $(ci_feed) -k azdo --skip-duplicate
+  displayName: 📦 Push MacOS packages to CI feed
+  condition: and(succeeded(), ${{ parameters.includeMacOS }}, ne(variables['ci_feed'], ''), ne(variables['Build.Reason'], 'PullRequest'))

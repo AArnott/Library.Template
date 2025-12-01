@@ -1,14 +1,21 @@
 parameters:
   RunTests:
+  RunDotNetFormat:
+  ProductionBuild:
+  TestingTimeout: 
 
 steps:
+- script: dotnet format --verify-no-changes --verbosity diagnostic --binarylog:"$(Build.ArtifactStagingDirectory)/build_logs/format.binlog"
+  displayName: 🛠 dotnet format
+  condition: ${{ parameters.RunDotNetFormat }}
 
-- script: dotnet build -t:build,pack --no-restore -c $(BuildConfiguration) -warnAsError -warnNotAsError:NU1901,NU1902,NU1903,NU1904 /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
+- script: dotnet build -t:build,pack --no-restore -c $(BuildConfiguration) -warnAsError -warnNotAsError:NU1901,NU1902,NU1903,NU1904 /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" -property:ProductionBuild=${{ parameters.ProductionBuild }}
   displayName: 🛠 dotnet build
 
-- powershell: tools/dotnet-test-cloud.ps1 -Configuration $(BuildConfiguration) -Agent $(Agent.JobName) -PublishResults
+- powershell: tools/dotnet-test-cloud.ps1 -Configuration $(BuildConfiguration) -Agent $(Agent.JobName) -PublishResults -ProductionBuild ${{ parameters.ProductionBuild }}
   displayName: 🧪 dotnet test
   condition: and(succeeded(), ${{ parameters.RunTests }})
+  timeoutInMinutes: ${{ parameters.TestingTimeout }}
 
 - powershell: tools/variables/_define.ps1
   failOnStderr: true
@@ -24,7 +31,7 @@ steps:
   - powershell: |
       $ArtifactStagingFolder = & "tools/Get-ArtifactsStagingDirectory.ps1"
       $CoverageResultsFolder = Join-Path $ArtifactStagingFolder "coverageResults-$(Agent.JobName)"
-      tools/publish-CodeCov.ps1 -CodeCovToken "$(CODECOV_TOKEN)" -PathToCodeCoverage "$CoverageResultsFolder" -Name "$(Agent.JobName) Coverage Results" -Flags "$(Agent.JobName)"
+      tools/publish-CodeCov.ps1 -CodeCovToken "$(CODECOV_TOKEN)" -PathToCodeCoverage "$CoverageResultsFolder" -Name "$(Agent.JobName) Coverage Results" -Flags "$(Agent.JobName)" -CalcNSFlags
     displayName: 📢 Publish code coverage results to codecov.io
     timeoutInMinutes: 3
     continueOnError: true

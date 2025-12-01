@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
 
 env:
+  PRODUCTION_BUILD: Testing
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   BUILDCONFIGURATION: Release
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages/
@@ -33,7 +34,30 @@ jobs:
         fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
     - name: ⚙ Install prerequisites
       run: |
-        ./init.ps1 -UpgradePrerequisites
+        # create variables
+        PP_PATH_IOS=$RUNNER_TEMP/NetworkVisorPlatformTestDevicesIOS_Development.mobileprovision
+        PP_PATH_MACCATALYST=$RUNNER_TEMP/NetworkVisorPlatformTestDevicesMacCatalyst_Development.provisionprofile
+        PP_PATH_MACOS_UNIT_TEST=$RUNNER_TEMP/Network_Visor_MacOS_Unit_Tests_Profile.provisionprofile
+        PP_PATH_MACOS_INTEGRATION_TEST=$RUNNER_TEMP/Network_Visor_MacOS_Integration_Tests_Profile.provisionprofile
+
+        # Produce provision profiles from Secrets
+        echo -n "$BUILD_PROVISION_IOS_BASE64" | base64 --decode -o $PP_PATH_IOS
+        echo -n "$BUILD_PROVISION_MACCATALYST_BASE64" | base64 --decode -o $PP_PATH_MACCATALYST
+        echo -n "$BUILD_PROVISION_MACOS_UNIT_TEST_BASE64" | base64 --decode -o $PP_PATH_MACOS_UNIT_TEST
+        echo -n "$BUILD_PROVISION_MACOS_INTEGRATION_TEST_BASE64" | base64 --decode -o $PP_PATH_MACOS_INTEGRATION_TEST
+
+        # copy provisioning profile
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $PP_PATH_IOS ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $PP_PATH_MACCATALYST ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $PP_PATH_MACOS_UNIT_TEST ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $PP_PATH_MACOS_INTEGRATION_TEST ~/Library/MobileDevice/Provisioning\ Profiles
+
+      if: runner.os == 'macOS'
+
+    - name: ⚙ Install prerequisites on Windows
+      run: |
+        ./init.ps1 -UpgradePrerequisites -WorkloadRestore -UpdateNugetSourceName: ${{ env.NUGET_NAME }} -UpdateNugetSourcePath: ${{ env.NUGET_URL }} -UpdateNugetUserName: NetworkVisor -UpdateNugetPassword: ${{ secrets.NETWORKVISOR_BUILD_PAT }}
         dotnet --info
 
         # Print mono version if it is present.
@@ -41,21 +65,30 @@ jobs:
           mono --version
         }
       shell: pwsh
+      if: runner.os == 'Windows'
+    - name: ⚙ Install prerequisites on MacOS
+      run: |
+        ./init.ps1 -UpgradePrerequisites -WorkloadRestore -UpdateNugetSourceName: ${{ env.NUGET_NAME }} -UpdateNugetSourcePath: ${{ env.NUGET_URL }} -UpdateNugetUserName: NetworkVisor -UpdateNugetPassword: ${{ secrets.NETWORKVISOR_BUILD_PAT }}
+        dotnet --info
+
+        # Print mono version if it is present.
+        if (Get-Command mono -ErrorAction SilentlyContinue) {
+          mono --version
+        }
+      shell: pwsh
+      if: runner.os == 'macOS'
     - name: ⚙️ Set pipeline variables based on source
       run: tools/variables/_define.ps1
       shell: pwsh
-    - name: 🛠 build
-      run: dotnet build -t:build,pack --no-restore -c ${{ env.BUILDCONFIGURATION }} -warnAsError -warnNotAsError:NU1901,NU1902,NU1903,NU1904 /bl:"${{ runner.temp }}/_artifacts/build_logs/build.binlog"
-    - name: 🧪 test
-      run: tools/dotnet-test-cloud.ps1 -Configuration ${{ env.BUILDCONFIGURATION }} -Agent ${{ runner.os }}
-      shell: pwsh
     - name: 💅🏻 Verify formatted code
-      run: dotnet format --verify-no-changes --no-restore
+      run: dotnet format --verify-no-changes --verbosity diagnostic --binarylog:"${{ runner.temp }}/_artifacts/build_logs/format.binlog"
+      if: ${{ env.RUN_DOTNET_FORMAT == 'true'}}
+    - name: 🛠 build
+      run: dotnet build -t:build,pack --no-restore -c ${{ env.BUILDCONFIGURATION }} -warnAsError -warnNotAsError:NU1901,NU1902,NU1903,NU1904 /bl:"${{ runner.temp }}/_artifacts/build_logs/build.binlog" -property:ProductionBuild=${{ env.PRODUCTION_BUILD}}
+    - name: 🧪 test
+      run: tools/dotnet-test-cloud.ps1 -Configuration ${{ env.BUILDCONFIGURATION }} -Agent ${{ runner.os }} -ProductionBuild ${{ env.PRODUCTION_BUILD }}
       shell: pwsh
-      if: runner.os == 'Linux'
-    - name: 📚 Verify docfx build
-      run: dotnet docfx docfx/docfx.json --warningsAsErrors --disableGitFeatures
-      if: runner.os == 'Linux'
+      timeout-minutes: 40
     - name: ⚙ Update pipeline variables based on build outputs
       run: tools/variables/_define.ps1
       shell: pwsh
@@ -65,12 +98,25 @@ jobs:
     - name: 📢 Publish code coverage results to codecov.io
       run: |
         if ('${{ secrets.CODECOV_TOKEN }}') {
-          ./tools/publish-CodeCov.ps1 -CodeCovToken '${{ secrets.CODECOV_TOKEN }}' -PathToCodeCoverage "${{ runner.temp }}/_artifacts/coverageResults" -Name "${{ runner.os }} Coverage Results" -Flags "${{ runner.os }}"
+          ./tools/publish-CodeCov.ps1 -CodeCovToken '${{ secrets.CODECOV_TOKEN }}' -PathToCodeCoverage "${{ runner.temp }}/_artifacts/coverageResults" -Name "${{ runner.os }} Coverage Results" -Flags "${{ runner.os }}" -CalcNSFlags
         }
       shell: pwsh
       timeout-minutes: 3
       continue-on-error: true
-
+    - name: Cleanup Nuget Source
+      if: always()
+      continue-on-error: true
+      run: |
+        dotnet nuget remove source networkvisor-eng
+    - name: Cleanup Apple Provisioning
+      if: runner.os == 'macOS'
+      continue-on-error: true
+      run: |
+        security delete-keychain ~Library/Keychains/signing_temp_ios.keychain-db
+        rm ~/Library/MobileDevice/Provisioning\ Profiles/NetworkVisorPlatformTestDevicesIOS_Development.mobileprovision
+        rm ~/Library/MobileDevice/Provisioning\ Profiles/NetworkVisorPlatformTestDevicesMacCatalyst_Development.provisionprofile
+        rm ~/Library/MobileDevice/Provisioning\ Profiles/Network_Visor_MacOS_Unit_Tests_Profile.provisionprofile
+        rm ~/Library/MobileDevice/Provisioning\ Profiles/Network_Visor_MacOS_Integration_Tests_Profile.provisionprofile
   docs:
     name: 📃 Docs
     runs-on: ubuntu-latest

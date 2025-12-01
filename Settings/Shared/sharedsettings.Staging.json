@@ -1,0 +1,52 @@
+﻿{
+  "AppSettings": {
+    "SchemaVersion": "1.0",
+
+    "AppName": "NetworkVisor.Platform.Test.Staging",
+    "AppGuid": "ac9fce80-903c-49b2-beb9-b30b6af45d38",
+    "AppPackageName": "com.NetworkVisor.Platform.Test.Staging",
+    "AppFolderName": "NetworkVisor.Platform.Test.Staging",
+
+    "AppHostSettings": {
+      "AppHostEnvironment": "Staging",
+      "CloudHostEnvironment": "Staging"
+    },
+
+    "AppLoggingSettings": {
+      "MinimumLogLevel": "Information",
+      "LoggerProviders": "AppFull",
+      "OpenTelemetryConnectionString": "InstrumentationKey=3a61ff04-0477-460b-8a0d-2600ece796b3;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/;ApplicationId=b77f3264-b5cb-4459-bf9c-31f47480b010"
+    },
+
+    "AppAuthSettings": {
+      "AuthEnvironment": "Staging",
+      "TenantId": "networkvisor.onmicrosoft.com",
+      "ClientId": "6755f8cb-ec9f-405e-b4b1-80c351f26ce3",
+      "ClientSecret": ""
+    },
+
+    "CloudAuthSettings": {
+      "AzureADB2CHostname": "login.networkvisor.com",
+      "B2CExtensionAppClientId": "00db7f61-e487-4d1c-a9f9-70add85080db",
+      "PolicySignUpSignIn": "B2C_1A_SIGNUP_SIGNIN",
+      "PolicyProfileEdit": "B2C_1A_PROFILEEDIT",
+      "PolicyPasswordReset": "B2C_1A_PASSWORDRESET",
+      "Scopes": [
+        "https://networkvisortest.onmicrosoft.com/api/demo.read",
+        "openid",
+        "offline_access"
+      ],
+      "IOSKeyChainGroup": "D544TWJP3J.com.NetworkVisor.Shared",
+
+      "VaultSettings": {
+        "VaultUri": "https://nv-keyvault-staging.vault.azure.net/"
+      },
+
+      "LogLevel": "Information"
+    }
+  },
+
+  "ApplicationInsights": {
+    "ConnectionString": "InstrumentationKey=3a61ff04-0477-460b-8a0d-2600ece796b3;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/;ApplicationId=b77f3264-b5cb-4459-bf9c-31f47480b010"
+  }
+}

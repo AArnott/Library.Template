@@ -34,6 +34,16 @@
     An optional access token for authenticating to Azure Artifacts authenticated feeds.
 .PARAMETER Interactive
     Runs NuGet restore in interactive mode. This can turn authentication failures into authentication challenges.
+.PARAMETER UpdateNugetSourceName
+    Name of the private Nuget source
+.PARAMETER UpdateNugetSourcePath
+    URL of the private Nuget source
+.PARAMETER UpdateNugetUserName
+    User name of the private Nuget source
+.PARAMETER UpdateNugetPassword
+    Password of the private Nuget source
+.PARAMETER WorkloadRestore
+    Restores dotnet workloads.
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 Param (
@@ -52,7 +62,17 @@ Param (
     [Parameter()]
     [string]$AccessToken,
     [Parameter()]
-    [switch]$Interactive
+    [switch]$Interactive,
+    [Parameter()]
+    [string]$UpdateNugetSourceName,
+    [Parameter()]
+    [string]$UpdateNugetSourcePath,
+    [Parameter()]
+    [string]$UpdateNugetUserName,
+    [Parameter()]
+    [string]$UpdateNugetPassword,
+    [Parameter()]
+    [switch]$WorkloadRestore
 )
 
 $EnvVars = @{}
@@ -66,6 +86,11 @@ if (!$NoPrerequisites) {
     & "$PSScriptRoot\tools\Install-DotNetSdk.ps1" -InstallLocality $InstallLocality
     if ($LASTEXITCODE -eq 3010) {
         Exit 3010
+    }
+    
+    # Update a Nuget source
+    if ($UpdateNugetSourceName) {
+        & "$PSScriptRoot\tools\Update-NugetSource.ps1" -UpdateNugetSourceName: $UpdateNugetSourceName -UpdateNugetSourcePath: $UpdateNugetSourcePath -UpdateNugetUserName: $UpdateNugetUserName -UpdateNugetPassword: $UpdateNugetPassword
     }
 
     # The procdump tool and env var is required for dotnet test to collect hang/crash dumps of tests.
@@ -87,6 +112,14 @@ try {
     if ($Interactive) {
         $RestoreArguments += '--interactive'
     }
+
+    if ($WorkloadRestore -and $PSCmdlet.ShouldProcess("dotnet workload", "restore")) {
+        Write-Host "Restoring dotnet workloads" -ForegroundColor $HeaderColor
+        dotnet workload install maui android macos maccatalyst ios tvos wasm-tools wasm-tools-net6 wasm-tools-net7 wasm-tools-net8 wasm-tools-net9 @RestoreArguments
+        if ($lastexitcode -ne 0) {
+            throw "Failure while restoring dotnet workloads."
+        }
+      }
 
     if (!$NoRestore -and $PSCmdlet.ShouldProcess("NuGet packages", "Restore")) {
         Write-Host "Restoring NuGet packages" -ForegroundColor $HeaderColor

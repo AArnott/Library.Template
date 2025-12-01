@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
+  "methodDisplay": "method",
+  "shadowCopy": false,
+  "longRunningTestSeconds": 0,
+  "diagnosticMessages": true,
+  "parallelizeAssembly": true,
+  "preEnumerateTheories":  true
+}

@@ -4,24 +4,86 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <NetworkVisorVersion>4.4.70-beta</NetworkVisorVersion>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Put repo-specific PackageVersion items in this group. -->
-  </ItemGroup>
-  <ItemGroup Label="Library.Template">
+    <PackageVersion Include="Azure.Identity" Version="1.17.1" />
+    <PackageVersion Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.5.0" />
+    <PackageVersion Include="Azure.Security.KeyVault.Secrets" Version="4.8.0" />
+    <PackageVersion Include="BouncyCastle.Cryptography" Version="2.6.2" />
+    <PackageVersion Include="CommunityToolkit.Maui" Version="13.0.0" />
+    <PackageVersion Include="FluentAssertions" Version="8.8.0" />
+    <PackageVersion Include="Hangfire.Core" Version="1.8.22" />
+    <PackageVersion Include="Hangfire.NetCore" Version="1.8.22" />
+    <PackageVersion Include="Hangfire.Storage.SQLite" Version="0.4.2" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
+    <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Identity.Client" Version="4.79.2" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.11" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="MQTTnet" Version="4.3.7.1207" />
+    <PackageVersion Include="MQTTnet.Extensions.ManagedClient" Version="4.3.7.1207" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.14.0" />
+    <PackageVersion Include="Paramore.Brighter" Version="10.0.2" />
+    <PackageVersion Include="Paramore.Brighter.Extensions.Hosting" Version="10.0.0-preview.4" />
+    <PackageVersion Include="Paramore.Brighter.Inbox.Sqlite" Version="10.0.2" />
+    <PackageVersion Include="Paramore.Brighter.MessageScheduler.Hangfire" Version="10.0.2" />
+    <PackageVersion Include="Paramore.Brighter.Outbox.Sqlite" Version="10.0.2" />
+    <PackageVersion Include="Paramore.Brighter.ServiceActivator" Version="10.0.2" />
+    <PackageVersion Include="Paramore.Brighter.ServiceActivator.Extensions.DependencyInjection" Version="10.0.2" />
+    <PackageVersion Include="Paramore.Brighter.ServiceActivator.Extensions.Hosting" Version="10.0.2" />
+    <PackageVersion Include="Paramore.Brighter.Sqlite" Version="10.0.2" />
+    <PackageVersion Include="Paramore.Brighter.Sqlite.Dapper" Version="10.0.0-preview.6" />
+    <PackageVersion Include="Paramore.Darker" Version="4.1.1" />
+    <PackageVersion Include="Paramore.Darker.AspNetCore" Version="4.1.1" />
+    <PackageVersion Include="Paramore.Darker.Policies" Version="4.1.1" />
+    <PackageVersion Include="Paramore.Darker.QueryLogging" Version="4.1.1" />
+    <PackageVersion Include="Plugin.CurrentActivity" Version="2.1.0.4" />
+    <PackageVersion Include="Polly" Version="8.6.5" />
+    <PackageVersion Include="Polly.Extensions" Version="8.6.5" />
+    <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
+    <PackageVersion Include="Polly.RateLimiting" Version="8.6.5" />
+    <PackageVersion Include="SpotifyAPI.Web" Version="7.0.2" />
+    <PackageVersion Include="SpotifyAPI.Web.Auth" Version="7.0.2" />
+    <PackageVersion Include="SSDP.UPnP.PCL" Version="6.1.0" />
+    <PackageVersion Include="System.Collections.Immutable" Version="10.0.0" />
+    <PackageVersion Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="10.0.0" />
+    <PackageVersion Include="System.Net.Http" Version="4.3.4" />
+    <PackageVersion Include="System.Net.Requests" Version="4.3.0" />
+    <PackageVersion Include="System.Net.WebHeaderCollection" Version="4.3.0" />
+    <PackageVersion Include="System.Private.Uri" Version="4.3.2" />
+    <PackageVersion Include="System.Reactive" Version="6.1.0" />
+    <PackageVersion Include="System.Security.Cryptography.ProtectedData" Version="10.0.0" />
+    <PackageVersion Include="WindowsFirewallHelper" Version="2.2.0.86" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.1" />
+    <PackageVersion Include="xunit.v3.assert" Version="3.2.1" />
+    <PackageVersion Include="xunit.v3.extensibility.core" Version="3.2.1" />
+    <PackageVersion Include="xunit.v3.runner.inproc.console" Version="3.2.1" />
+    <PackageVersion Include="xunit.v3.runner.utility" Version="3.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <!-- Put repo-specific GlobalPackageReference items in this group. -->
-  </ItemGroup>
-  <ItemGroup Label="Library.Template">
     <GlobalPackageReference Include="CSharpIsNullAnalyzer" Version="0.1.593" />
     <GlobalPackageReference Include="DotNetAnalyzers.DocumentationAnalyzers" Version="1.0.0-beta.59" />
     <!-- The condition works around https://github.com/dotnet/sdk/issues/44951 -->
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.9.50" Condition="!('$(TF_BUILD)'=='true' and '$(dotnetformat)'=='true')" />
+    <GlobalPackageReference Include="Nullable" Version="1.3.1" />
     <GlobalPackageReference Include="PolySharp" Version="1.15.0" />
-    <GlobalPackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556" />
+    <GlobalPackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </GlobalPackageReference>
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 </Project>

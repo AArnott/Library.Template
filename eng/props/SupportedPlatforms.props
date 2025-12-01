@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <!-- IOS 
+    Current:  IOS 12.2,   Released: 9/17/2018
+    Previous: IOS 11.0,   Released: 9/29/2017 (Changed to 12.2 on 11/13/2024)
+    -->
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+    <SupportedOSPlatformVersion>12.2</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <!-- MacCatalyst 
+    Current:  Sequoia 15.0,   Released: 6/10/2024
+    Previous: Ventura 13.1,   Released: 6/2/2020 (Changed to 15.0 on 11/13/2024)
+    -->
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
+    <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <!-- MacOS 
+    Current:  Monterey 12.0,    Released: 6/7/2021
+    Previous: Catalina 10.15,   Released: 6/3/2019 (Changed to 12.0 on 11/13/2024)
+    -->
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'macos'">
+    <SupportedOSPlatformVersion>12.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <!-- Android -->
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <!-- Windows -->
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
+
+    <!-- WPF supports Windows 7 SP1:   Microsoft Windows NT 6.1.7601 Service Pack 1-->
+    <SupportedOSPlatformVersion>6.1</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>6.1</TargetPlatformMinVersion>
+
+    <!-- Windows net10.0-windows10.0 -->
+    <SupportedOSPlatformVersion Condition="$(TargetFramework.StartsWith('net10.0-windows10.0'))">10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$(TargetFramework.StartsWith('net10.0-windows10.0'))">10.0.17763.0</TargetPlatformMinVersion>
+
+    <PublishReadyToRun>false</PublishReadyToRun>
+
+  </PropertyGroup>
+
+  <!-- Tizen -->
+  <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">
+    <SupportedOSPlatformVersion>6.5</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+</Project>

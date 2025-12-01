@@ -10,12 +10,6 @@ steps:
   continueOnError: true
 - task: DownloadPipelineArtifact@2
   inputs:
-    artifact: symbols-Linux
-    path: $(Pipeline.Workspace)/symbols/Linux
-  displayName: 🔻 Download Linux symbols
-  continueOnError: true
-- task: DownloadPipelineArtifact@2
-  inputs:
     artifact: symbols-macOS
     path: $(Pipeline.Workspace)/symbols/macOS
   displayName: 🔻 Download macOS symbols
@@ -27,12 +21,6 @@ steps:
     artifact: test_symbols-Windows
     path: $(Pipeline.Workspace)/test_symbols/Windows
   displayName: 🔻 Download Windows test symbols
-  continueOnError: true
-- task: DownloadPipelineArtifact@2
-  inputs:
-    artifact: test_symbols-Linux
-    path: $(Pipeline.Workspace)/test_symbols/Linux
-  displayName: 🔻 Download Linux test symbols
   continueOnError: true
 - task: DownloadPipelineArtifact@2
   inputs:

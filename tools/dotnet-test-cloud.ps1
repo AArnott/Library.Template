@@ -13,14 +13,17 @@
     A switch to run the tests in an x86 process.
 .PARAMETER dotnet32
     The path to a 32-bit dotnet executable to use.
+.PARAMETER ProductionBuild
+    Production build property to set.
 #>
 [CmdletBinding()]
 Param(
-    [string]$Configuration='Debug',
+    [string]$Configuration='Debug-Windows',
     [string]$Agent='Local',
     [switch]$PublishResults,
     [switch]$x86,
-    [string]$dotnet32
+    [string]$dotnet32,
+    [string]$ProductionBuild='Staging'
 )
 
 $RepoRoot = (Resolve-Path "$PSScriptRoot/..").Path
@@ -53,11 +56,12 @@ $testDiagLog = Join-Path $ArtifactStagingFolder (Join-Path test_logs diag.log)
     --filter "TestCategory!=FailsInCloudTest" `
     --collect "Code Coverage;Format=cobertura" `
     --settings "$PSScriptRoot/test.runsettings" `
-    --blame-hang-timeout 60s `
+    --blame-hang-timeout 300s `
     --blame-crash `
     -bl:"$testBinLog" `
     --diag "$testDiagLog;TraceLevel=info" `
     --logger trx `
+    -property:ProductionBuild=$ProductionBuild `
 
 $unknownCounter = 0
 Get-ChildItem -Recurse -Path $RepoRoot\test\*.trx |% {

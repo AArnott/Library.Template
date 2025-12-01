@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-windows;net8.0-windows;net472;</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);NV_PLAT_WINDOWS;NV_PLAT_NETCORE</DefineConstants>
+    <NoWarn>$(NoWarn);CS1591;NETSDK1138</NoWarn>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <!-- Supported OS Platforms for MAUI -->
+  <Import Project="..\..\..\eng\props\SupportedPlatforms.props" Label="SupportedPlatforms" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\platform\TestUtils\NetworkVisor.Platform.Windows.TestUtils\NetworkVisor.Platform.Windows.TestUtils.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Tests\NetworkVisor.Platform.Test.Shared.Tests.projitems" Label="Tests" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.UnitTests\NetworkVisor.Platform.Test.Shared.UnitTests.projitems" Label="Shared" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Windows.UnitTests\NetworkVisor.Platform.Test.Shared.Windows.UnitTests.projitems" Label="Shared" />
+  <Import Project="..\..\..\Settings\Settings.Build.targets" Label="Settings" />
+
+</Project>

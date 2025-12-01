@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-android</TargetFrameworks>
+    <UseMaui>true</UseMaui>
+    <DefineConstants>$(DefineConstants);NV_PLAT_ANDROID;NV_PLAT_MOBILE</DefineConstants>
+    <NoWarn>$(NoWarn);CS1591;XA0101</NoWarn>
+    <IsTestProject>false</IsTestProject>
+    <IsPackable>true</IsPackable>
+
+  </PropertyGroup>
+
+  <!-- Supported OS Platforms for MAUI -->
+  <Import Project="..\..\..\eng\props\SupportedPlatforms.props" Label="SupportedPlatforms" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\platform\TestUtils\NetworkVisor.Platform.Android.TestUtils\NetworkVisor.Platform.Android.TestUtils.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\..\Settings\Settings.Build.targets" Label="Settings" />
+
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Tests\NetworkVisor.Platform.Test.Shared.Tests.projitems" Label="Tests" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.IntegrationTests\NetworkVisor.Platform.Test.Shared.IntegrationTests.projitems" Label="Shared" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Mobile.IntegrationTests\NetworkVisor.Platform.Test.Shared.Mobile.IntegrationTests.projitems" Label="Shared" />
+</Project>

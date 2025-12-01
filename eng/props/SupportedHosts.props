@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <PropertyGroup Condition=" $([MSBuild]::IsOSPlatform('Windows')) ">
+    <DefineConstants>$(DefineConstants);NV_HOST_WINDOWS</DefineConstants>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug-Windows</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" $([MSBuild]::IsOSPlatform('Linux')) ">
+    <DefineConstants>$(DefineConstants);NV_HOST_LINUX</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" $([MSBuild]::IsOSPlatform('OSX')) ">
+    <DefineConstants>$(DefineConstants);NV_HOST_MACOS</DefineConstants>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug-MacOS</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(ProductionBuild)' == 'Production' ">
+    <DefineConstants>$(DefineConstants);NV_BUILD_PRODUCTION</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(ProductionBuild)' == 'Testing' ">
+    <DefineConstants>$(DefineConstants);NV_BUILD_TESTING</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(ProductionBuild)' == 'Staging' ">
+    <DefineConstants>$(DefineConstants);NV_BUILD_STAGING</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(ProductionBuild)' == 'Development' ">
+    <DefineConstants>$(DefineConstants);NV_BUILD_DEVELOPMENT</DefineConstants>
+  </PropertyGroup>
+  
+</Project>

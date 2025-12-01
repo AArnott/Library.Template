@@ -1,7 +1,7 @@
 $RepoRoot = [System.IO.Path]::GetFullPath("$PSScriptRoot\..\..")
 $BuildConfiguration = $env:BUILDCONFIGURATION
 if (!$BuildConfiguration) {
-    $BuildConfiguration = 'Debug'
+    $BuildConfiguration = 'Debug-Windows'
 }
 
 $PackagesRoot = "$RepoRoot/bin/Packages/$BuildConfiguration"

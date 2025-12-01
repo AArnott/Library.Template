@@ -1,15 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <RepoRootPath>$(MSBuildThisFileDirectory)</RepoRootPath>
+
+    <!-- Disable warning for referenced assembly does not have a strong name. -->
+    <NoWarn>$(NoWarn);CS8002</NoWarn>
+
+    <!-- Fix MacCatalyst Entitlement Warnings starting in version 26 -->
+    <NoWarn>$(NoWarn);MT7151;MT7154</NoWarn>
+
+    <!-- Warnings started in net9. Editorconfig's files as additional files is no longer needed -->
+    <NoWarn>$(NoWarn);XUA1001;AD0001</NoWarn>
+
+    <BuildingInCI Condition=" '$(CI)' == 'true' or '$(TF_BUILD)' == 'true' ">true</BuildingInCI>
+    <DefineConstants Condition=" '$(BuildingInCI)' == 'true'">$(DefineConstants);NV_BUILD_CI</DefineConstants>
+    <Configurations>Debug;Release;Debug-Windows;Release-Windows;Debug-MacOS;Release-MacOS</Configurations>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProductionBuild Condition=" '$(ProductionBuild)' == '' ">Testing</ProductionBuild>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AcceptAndroidSDKLicenses>true</AcceptAndroidSDKLicenses>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <BaseIntermediateOutputPath>$(RepoRootPath)obj\$([MSBuild]::MakeRelative($(RepoRootPath), $(MSBuildProjectDirectory)))\</BaseIntermediateOutputPath>
     <BaseOutputPath Condition=" '$(BaseOutputPath)' == '' ">$(RepoRootPath)bin\$(MSBuildProjectName)\</BaseOutputPath>
+  </PropertyGroup>
+
+  <!-- Suppress target framework support warnings on net472 -->
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+  </PropertyGroup>
+
+  <!-- Use HangFire on non-net472 target platforms -->
+  <PropertyGroup Condition="!$(TargetFramework.StartsWith('net4'))">
+    <DefineConstants>$(DefineConstants);NV_USE_HANGFIRE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- ENC errors https://github.com/dotnet/sdk/issues/36666#issuecomment-1814835637 -->
+    <EnableSourceControlManagerQueries>true</EnableSourceControlManagerQueries>
+  </PropertyGroup>
+
+  <!-- Supported Hosts and Defines -->
+  <Import Project="$(RepoRootPath)eng\props\SupportedHosts.props" Label="SupportedHosts" />
+
+  <PropertyGroup>
     <PackageOutputPath>$(RepoRootPath)bin\Packages\$(Configuration)\</PackageOutputPath>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Language level and code analysis -->
+    <LangVersion>latest</LangVersion>
     <AnalysisLevel>latest</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <RestoreEnablePackagePruning>true</RestoreEnablePackagePruning>
@@ -27,25 +71,20 @@
     <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
 
     <!-- Local builds should embed PDBs so we never lose them when a subsequent build occurs. -->
-    <DebugType Condition=" '$(CI)' != 'true' and '$(TF_BUILD)' != 'true' ">embedded</DebugType>
+    <DebugType Condition=" '$(BuildingInCI)' != 'true' ">embedded</DebugType>
 
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)strongname.snk</AssemblyOriginatorKeyFile>
 
-    <!-- <PackageProjectUrl>https://github.com/ORG/REPO</PackageProjectUrl> -->
-    <Company>COMPANY-PLACEHOLDER</Company>
-    <Authors>COMPANY-PLACEHOLDER</Authors>
-    <Copyright>© COMPANY-PLACEHOLDER. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/NetworkVisor/Platform</PackageProjectUrl>
+    <Company>Network Visor</Company>
+    <Authors>Network Visor</Authors>
+    <Copyright>© Network Visor. All rights reserved.</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols Condition=" '$(DebugType)' != 'embedded' ">true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LangVersion Condition="'$(MSBuildProjectExtension)'=='.csproj'">14</LangVersion>
-    <LangVersion Condition="'$(MSBuildProjectExtension)'=='.vbproj'">16.9</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

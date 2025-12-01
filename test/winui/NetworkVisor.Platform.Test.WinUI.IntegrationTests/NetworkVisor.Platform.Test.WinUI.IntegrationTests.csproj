@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-windows10.0.19041</TargetFrameworks>
+    <UseMaui>true</UseMaui>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <DefineConstants>$(DefineConstants);NV_PLAT_WINUI;NV_PLAT_MOBILE</DefineConstants>
+    <IsTestProject>false</IsTestProject>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <!-- Supported OS Platforms for MAUI -->
+  <Import Project="..\..\..\eng\props\SupportedPlatforms.props" Label="SupportedPlatforms" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\platform\TestUtils\NetworkVisor.Platform.WinUI.TestUtils\NetworkVisor.Platform.WinUI.TestUtils.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\..\Settings\Settings.Build.targets" Label="Settings" />
+
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Tests\NetworkVisor.Platform.Test.Shared.Tests.projitems" Label="Tests" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.IntegrationTests\NetworkVisor.Platform.Test.Shared.IntegrationTests.projitems" Label="Shared" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Windows.IntegrationTests\NetworkVisor.Platform.Test.Shared.Windows.IntegrationTests.projitems" Label="Shared" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Mobile.IntegrationTests\NetworkVisor.Platform.Test.Shared.Mobile.IntegrationTests.projitems" Label="Shared" />
+
+</Project>

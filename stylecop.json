@@ -2,14 +2,15 @@
   "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {
-      "companyName": "COMPANY-PLACEHOLDER",
-      "copyrightText": "Copyright (c) {companyName}. All rights reserved.\nLicensed under the {licenseName} license. See {licenseFile} file in the project root for full license information.",
+      "companyName": "Network Visor",
+      "copyrightText": "     Copyright (c) {companyName}. All rights reserved.\n     Licensed under the {licenseName} license. See {licenseFile} file in the project root for full license information.",
+      "headerDecoration": "// ***********************************************************************",
       "variables": {
         "licenseName": "MIT",
         "licenseFile": "LICENSE"
       },
       "fileNamingConvention": "metadata",
-      "xmlHeader": false
+      "xmlHeader": true
     },
     "orderingRules": {
       "usingDirectivesPlacement": "outsideNamespace"

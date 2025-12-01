@@ -8,6 +8,7 @@ trigger:
   paths:
     exclude:
     - doc/
+    - docs/
     - '*.md'
     - .vscode/
     - .github/
@@ -17,16 +18,41 @@ parameters:
 - name: includeMacOS
   displayName: Build on macOS
   type: boolean
-  default: false # macOS is often bogged down in Azure Pipelines
+  default: true # macOS is often bogged down in Azure Pipelines
 - name: RunTests
   displayName: Run tests
   type: boolean
   default: true
+- name: ProductionBuild
+  type: string
+  default: 'Testing'
+- name: XCodePath
+  type: string
+  default: '/Applications/Xcode_26.1.1.app'
+- name: WindowsAgentPool
+  displayName: Build Pool for Windows host
+  type: string
+  default: 'Local Windows'
+- name: MacAgentPool
+  displayName: Build Pool for macOS host
+  type: string
+  default: ''
+- name: CertSecurePwd
+  displayName: Password for Apple certificate
+  type: string
+  default: $(CertSecurePwd)
+- name: RunDotNetFormatWin
+  displayName: Run dotnet format on windows
+  type: boolean
+  default: true
+- name: RunDotNetFormatMac
+  displayName: Run dotnet format on macos
+  type: boolean
+  default: false
 
 variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  BuildConfiguration: Release
-  ci_feed: https://pkgs.dev.azure.com/andrewarnott/_packaging/CI/nuget/v3/index.json # Azure Artifacts feed URL
+  ci_feed: 'https://pkgs.dev.azure.com/NetworkVisor/_packaging/networkvisor-eng/nuget/v3/index.json'
   NUGET_PACKAGES: $(Agent.TempDirectory)/.nuget/packages/
 
 jobs:
@@ -34,3 +60,10 @@ jobs:
   parameters:
     includeMacOS: ${{ parameters.includeMacOS }}
     RunTests: ${{ parameters.RunTests }}
+    ProductionBuild: ${{ parameters.ProductionBuild }}
+    XCodePath: ${{ parameters.XCodePath }}
+    WindowsAgentPool: ${{ parameters.WindowsAgentPool }}
+    MacAgentPool: ${{ parameters.MacAgentPool }}
+    CertSecurePwd: ${{ parameters.CertSecurePwd }}
+    RunDotNetFormatWin: ${{ parameters.RunDotNetFormatWin }}
+    RunDotNetFormatMac: ${{ parameters.RunDotNetFormatMac }}

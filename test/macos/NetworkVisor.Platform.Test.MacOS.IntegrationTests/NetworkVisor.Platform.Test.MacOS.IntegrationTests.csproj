@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net8.0</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);NV_PLAT_MACOS;NV_PLAT_NETCORE</DefineConstants>
+    <NoWarn>$(NoWarn);CS1591;NETSDK1138</NoWarn>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Display name -->
+    <ApplicationTitle>MacOS Integration Tests</ApplicationTitle>
+
+    <!-- App Identifier -->
+    <ApplicationId>com.NetworkVisor.Platform.Test.MacOS.IntegrationTests</ApplicationId>
+
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+  </PropertyGroup>
+
+  <!-- On a macOS build agent publish net10.0-macos as an exe with the OSArchitecture runtime identifier -->
+  <PropertyGroup Condition="'$(TargetFramework)'=='net10.0-macos'">
+    <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'arm64'">osx-arm64</RuntimeIdentifier>
+
+    <CodesignKey>Apple Development: Steve Bush (GPGZJG49H8)</CodesignKey>
+    <CodesignProvision>Network Visor MacOS Integration Tests Profile</CodesignProvision>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <LinkMode>None</LinkMode>
+  </PropertyGroup>
+
+  <!-- Supported OS Platforms for MAUI -->
+  <Import Project="..\..\..\eng\props\SupportedPlatforms.props" Label="SupportedPlatforms" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\platform\TestUtils\NetworkVisor.Platform.MacOS.TestUtils\NetworkVisor.Platform.MacOS.TestUtils.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\..\Settings\Settings.Build.targets" Label="Settings" />
+
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Tests\NetworkVisor.Platform.Test.Shared.Tests.projitems" Label="Tests" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.IntegrationTests\NetworkVisor.Platform.Test.Shared.IntegrationTests.projitems" Label="Shared" Condition="Exists('..\..\shared\NetworkVisor.Platform.Test.Shared.IntegrationTests\NetworkVisor.Platform.Test.Shared.IntegrationTests.projitems')" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.MacOS.IntegrationTests\NetworkVisor.Platform.Test.Shared.MacOS.IntegrationTests.projitems" Label="Shared" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Desktop.IntegrationTests\NetworkVisor.Platform.Test.Shared.Desktop.IntegrationTests.projitems" Label="Shared" />
+  <Import Project="..\..\shared\NetworkVisor.Platform.Test.Shared.Apple.IntegrationTests\NetworkVisor.Platform.Test.Shared.Apple.IntegrationTests.projitems" Label="Shared" />
+
+</Project>

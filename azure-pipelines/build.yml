@@ -1,22 +1,60 @@
 parameters:
-- name: windowsPool
-  type: object
-  default:
-    vmImage: windows-2022
 - name: includeMacOS
   type: boolean
 - name: RunTests
   type: boolean
   default: true
+- name: jobTimeout
+  type: number
+  default: 70
+- name: TestingTimeout
+  type: number
+  default: 40
+- name: ProductionBuild
+- name: XCodePath
+- name: WindowsAgentPool
+  type: string
+  default: ''
+- name: MacAgentPool
+  type: string
+  default: ''
+- name: CertSecurePwd
+  type: string
+- name: RunDotNetFormatWin
+  displayName: Run dotnet format on windows
+  type: boolean
+  default: true
+- name: RunDotNetFormatMac
+  displayName: Run dotnet format on macos
+  type: boolean
+  default: false
 
 jobs:
 - job: Windows
-  pool: ${{ parameters.windowsPool }}
+  pool:
+    ${{ if eq(parameters.WindowsAgentPool, '') }}:
+        vmImage: windows-latest
+    ${{ if ne(parameters.WindowsAgentPool, '') }}:
+        name: ${{ parameters.WindowsAgentPool }}
+  timeoutInMinutes: ${{ parameters.jobTimeout }}
+  variables:
+    BuildConfiguration: Release-Windows
   steps:
   - checkout: self
     fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
     clean: true
   - template: install-dependencies.yml
+    parameters:
+      initArgs: -WorkloadRestore
+
+  - script: java --version
+    displayName: ⚙ Java version
+
+  - script: echo $(BuildConfiguration)
+    displayName: Verify build configuration
+
+  - script: echo ${{ parameters.ProductionBuild }}
+    displayName: Verify production build
 
   - script: dotnet nbgv cloud -c
     displayName: ⚙ Set build number
@@ -24,46 +62,92 @@ jobs:
   - template: dotnet.yml
     parameters:
       RunTests: ${{ parameters.RunTests }}
-  - template: expand-template.yml
-
-- job: Linux
-  pool:
-    vmImage: Ubuntu-22.04
-  steps:
-  - checkout: self
-    fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
-    clean: true
-  - template: install-dependencies.yml
-  - template: dotnet.yml
-    parameters:
-      RunTests: ${{ parameters.RunTests }}
-  - script: dotnet format --verify-no-changes
-    displayName: 💅 Verify formatted code
-    env:
-      dotnetformat: true # part of a workaround for https://github.com/dotnet/sdk/issues/44951
-  - template: expand-template.yml
+      ProductionBuild: ${{ parameters.ProductionBuild }}
+      RunDotNetFormat: ${{ parameters.RunDotNetFormatWin }}
+      TestingTimeout: ${{ parameters.TestingTimeout }}
 
 - job: macOS
   condition: ${{ parameters.includeMacOS }}
+  timeoutInMinutes: ${{ parameters.jobTimeout }}
+
   pool:
-    vmImage: macOS-14
+    ${{ if eq(parameters.MacAgentPool, '') }}:
+        vmImage: macOS-15
+    ${{ if ne(parameters.MacAgentPool, '') }}:
+        name: ${{ parameters.MacAgentPool }}
+  variables:
+    BuildConfiguration: Release-MacOS
   steps:
   - checkout: self
     fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
     clean: true
+  - script: |
+      sudo xcode-select -p
+      echo "##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]${{ parameters.XCodePath }}"
+      sudo xcode-select --switch "${{ parameters.XCodePath }}"
+      sudo xcode-select -p
+    displayName: Sets xcode path
+    condition: ${{ eq(parameters.MacAgentPool, '') }}
   - template: install-dependencies.yml
+    parameters:
+      initArgs: -WorkloadRestore
+  - script: java --version
+    displayName: ⚙ Java version
+
+  - script: echo $(BuildConfiguration)
+    displayName: Verify build configuration
+
+  - script: echo ${{ parameters.ProductionBuild }}
+    displayName: Verify production build
+
+  - task: InstallAppleCertificate@2
+    displayName: ⚙ Install IOS Apple Certificate
+    inputs:
+      certSecureFile: 'SteveBushIOSDeviceTestSigningID.p12'
+      certPwd: ${{ parameters.CertSecurePwd }}
+    continueOnError: true
+
+  - task: InstallAppleProvisioningProfile@1
+    displayName: ⚙ IOS Device Provisioning Profile
+    inputs:
+      provisioningProfileLocation: 'secureFiles'
+      provProfileSecureFile: 'NetworkVisorPlatformTestDevicesIOS_Development.mobileprovision'
+
+  - task: InstallAppleProvisioningProfile@1
+    displayName: ⚙ MacCatalyst Device Provisioning Profile
+    inputs:
+      provisioningProfileLocation: 'secureFiles'
+      provProfileSecureFile: 'NetworkVisorPlatformTestDevicesMacCatalyst_Development.provisionprofile'
+
+  - task: InstallAppleProvisioningProfile@1
+    displayName: ⚙ MacOS Unit Tests Provisioning Profile
+    inputs:
+      provisioningProfileLocation: 'secureFiles'
+      provProfileSecureFile: 'Network_Visor_MacOS_Unit_Tests_Profile.provisionprofile'
+
+  - task: InstallAppleProvisioningProfile@1
+    displayName: ⚙ MacOS Integration Tests Provisioning Profile
+    inputs:
+      provisioningProfileLocation: 'secureFiles'
+      provProfileSecureFile: 'Network_Visor_MacOS_Integration_Tests_Profile.provisionprofile'
+
   - template: dotnet.yml
     parameters:
       RunTests: ${{ parameters.RunTests }}
-  - template: expand-template.yml
+      ProductionBuild: ${{ parameters.ProductionBuild }}
+      RunDotNetFormat: ${{ parameters.RunDotNetFormatMac }}
+      TestingTimeout: ${{ parameters.TestingTimeout }}
 
 - job: WrapUp
+  timeoutInMinutes: ${{ parameters.jobTimeout }}
   dependsOn:
   - Windows
-  - Linux
   - macOS
-  pool: ${{ parameters.windowsPool }} # Use Windows agent because PublishSymbols task requires it (https://github.com/microsoft/azure-pipelines-tasks/issues/13821).
+  pool:
+    vmImage: windows-latest
   condition: succeededOrFailed()
+  variables:
+    BuildConfiguration: Release-Windows
   steps:
   - checkout: self
     fetchDepth: 0 # avoid shallow clone so nbgv can do its work.
@@ -79,3 +163,5 @@ jobs:
       parameters:
         includeMacOS: ${{ parameters.includeMacOS }}
   - template: publish-deployables.yml
+    parameters:
+      includeMacOS: ${{ parameters.includeMacOS }}
