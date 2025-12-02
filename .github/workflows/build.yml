@@ -24,7 +24,7 @@ jobs:
       matrix:
         os:
         - ubuntu-22.04
-        - macos-14
+        - macOS-15
         - windows-2025
 
     steps:
