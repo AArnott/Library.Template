@@ -2,7 +2,7 @@ parameters:
 - name: windowsPool
   type: object
   default:
-    vmImage: windows-2022
+    vmImage: windows-2025
 - name: includeMacOS
   type: boolean
 - name: RunTests
