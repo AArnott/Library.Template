@@ -25,6 +25,7 @@ Param(
 
 $RepoRoot = (Resolve-Path "$PSScriptRoot/..").Path
 $ArtifactStagingFolder = & "$PSScriptRoot/Get-ArtifactsStagingDirectory.ps1"
+$OnCI = ($env:CI -or $env:TF_BUILD)
 
 $dotnet = 'dotnet'
 if ($x86) {
@@ -50,6 +51,8 @@ $testLogs = Join-Path $ArtifactStagingFolder test_logs
 $globalJson = Get-Content $PSScriptRoot/../global.json | ConvertFrom-Json
 $isMTP = $globalJson.test.runner -eq 'Microsoft.Testing.Platform'
 if ($isMTP) {
+    $extraArgs = @()
+    if ($OnCI) { $extraArgs += '--no-progress' }
     & $dotnet test --solution $RepoRoot `
         --no-build `
         -c $Configuration `
@@ -65,7 +68,8 @@ if ($isMTP) {
         --diagnostic-output-directory $testLogs `
         --diagnostic-verbosity Information `
         --results-directory $testLogs `
-        --report-trx
+        --report-trx `
+        @extraArgs
 } else {
     & $dotnet test $RepoRoot `
         --no-build `
