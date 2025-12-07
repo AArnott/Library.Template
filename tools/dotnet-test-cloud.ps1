@@ -71,6 +71,7 @@ if ($isMTP) {
         --report-trx `
         @extraArgs
 } else {
+    $testDiagLog = Join-Path $ArtifactStagingFolder (Join-Path test_logs diag.log)
     & $dotnet test $RepoRoot `
         --no-build `
         -c $Configuration `
