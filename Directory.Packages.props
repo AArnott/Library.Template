@@ -4,7 +4,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <MicrosoftTestingPlatformVersion>1.9.1</MicrosoftTestingPlatformVersion>
+    <MicrosoftTestingPlatformVersion>2.0.2</MicrosoftTestingPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <!-- Put repo-specific PackageVersion items in this group. -->
