@@ -10,7 +10,7 @@ $coverageFilesUnderArtifacts = if (Test-Path $directTestLogs) { @(Get-ChildItem 
 
 # Prepare code coverage reports for merging on another machine
 Write-Host "Substituting $repoRoot with `"{reporoot}`""
-$coverageFilesUnderRoot,$coverageFilesUnderArtifacts |? { $_ }|% {
+@($coverageFilesUnderRoot + $coverageFilesUnderArtifacts) |? { $_ }|% {
     $content = Get-Content -LiteralPath $_ |% { $_ -Replace [regex]::Escape($repoRoot), "{reporoot}" }
     Set-Content -LiteralPath $_ -Value $content -Encoding UTF8
 }
