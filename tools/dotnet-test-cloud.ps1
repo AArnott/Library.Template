@@ -86,8 +86,8 @@ if ($isMTP) {
 
 $unknownCounter = 0
 Get-ChildItem -Recurse -Path $RepoRoot\test\*.trx |% {
-  New-Item $ArtifactStagingFolder/test_logs/ -ItemType Directory -Force | Out-Null
-  Copy-Item $_ -Destination $ArtifactStagingFolder/test_logs/
+  New-Item $testLogs -ItemType Directory -Force | Out-Null
+  Copy-Item $_ -Destination $testLogs
 
   if ($PublishResults) {
     $x = [xml](Get-Content -LiteralPath $_)
