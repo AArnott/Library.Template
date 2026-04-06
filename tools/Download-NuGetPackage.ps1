@@ -50,16 +50,23 @@ $downloadExitCode = $LASTEXITCODE
 $ErrorActionPreference = $prevErrorActionPreference
 
 if ($downloadExitCode -ne 0) {
-    Write-Error "Failed to download package $packageArg (exit code $downloadExitCode)."
+    throw "Failed to download package $packageArg (exit code $downloadExitCode)."
 }
 
 # Return the path to the downloaded package directory (dotnet package download uses lowercase id)
 $packageIdLower = $PackageId.ToLower()
 if ($Version) {
-    $packageDir = Join-Path $OutputDirectory (Join-Path $packageIdLower $Version)
+    $packageRoot = Join-Path $OutputDirectory $packageIdLower
+    $packageDir = Get-ChildItem -Path $packageRoot -Directory -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -ieq $Version } |
+        Select-Object -First 1
+    if ($packageDir) { $packageDir = $packageDir.FullName }
 } else {
-    # When no version specified, find the downloaded directory
-    $packageDir = Get-ChildItem (Join-Path $OutputDirectory $packageIdLower) -ErrorAction SilentlyContinue | Select-Object -First 1
+    # When no version is specified, pick the most recently written version directory.
+    $packageRoot = Join-Path $OutputDirectory $packageIdLower
+    $packageDir = Get-ChildItem -Path $packageRoot -Directory -ErrorAction SilentlyContinue |
+        Sort-Object -Property LastWriteTimeUtc -Descending |
+        Select-Object -First 1
     if ($packageDir) { $packageDir = $packageDir.FullName }
 }
 
