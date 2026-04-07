@@ -10,11 +10,11 @@
 #>
 [CmdletBinding()]
 Param(
-    [Parameter(Mandatory=$true,Position=0)]
+    [Parameter(Mandatory = $true, Position = 0)]
     [string]$DllPath,
     [Parameter()]
     [string]$PdbPath,
-    [Parameter(Mandatory=$true,Position=1)]
+    [Parameter(Mandatory = $true, Position = 1)]
     [string]$OutputPath
 )
 
@@ -31,16 +31,16 @@ if (-not (Test-Path $pdb2pdbpath)) {
     $baseDir = (Resolve-Path $baseDir).Path # Normalize it
     # This package originally comes from the https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json feed.
     # Add this feed as an upstream to whatever feed is in nuget.config if this step fails.
-    & "$PSScriptRoot/Download-NuGetPackage.ps1" -PackageId Microsoft.DiaSymReader.Pdb2Pdb -Version $version -OutputDirectory $baseDir | Out-Null
+    & "$PSScriptRoot/Download-NuGetPackage.ps1" -PackageId Microsoft.DiaSymReader.Pdb2Pdb -Version $version -Source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json -OutputDirectory $baseDir | Out-Null
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Failed to install Microsoft.DiaSymReader.Pdb2Pdb. Consider adding https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json as an upstream to your nuget.config feed."
         return
     }
 }
 
-$args = $DllPath,'/out',$OutputPath,'/nowarn','0021'
+$args = $DllPath, '/out', $OutputPath, '/nowarn', '0021'
 if ($PdbPath) {
-    $args += '/pdb',$PdbPath
+    $args += '/pdb', $PdbPath
 }
 
 Write-Verbose "$pdb2pdbpath $args"

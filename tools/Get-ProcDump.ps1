@@ -6,7 +6,7 @@ $version = '0.0.1'
 $baseDir = "$PSScriptRoot\..\obj\tools"
 $procDumpToolPath = "$baseDir\procdump\$version\bin"
 if (-not (Test-Path $procDumpToolPath)) {
-    & "$PSScriptRoot\Download-NuGetPackage.ps1" -PackageId procdump -Version $version -Source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json -OutputDirectory $baseDir | Out-Null
+    & "$PSScriptRoot\Download-NuGetPackage.ps1" -PackageId procdump -Version $version -OutputDirectory $baseDir | Out-Null
 }
 
 (Resolve-Path $procDumpToolPath).Path
