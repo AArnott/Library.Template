@@ -60,6 +60,7 @@ $windowsDesktopRuntimeVersions = @()
 $aspnetRuntimeVersions = @()
 if (!$SdkOnly) {
     $projFiles = Get-ChildItem "$PSScriptRoot\..\src\*.*proj", "$PSScriptRoot\..\test\*.*proj" -Recurse
+    $projFiles += Get-ChildItem "$PSScriptRoot\..\src\Directory.Build.props", "$PSScriptRoot\..\test\Directory.Build.props" -Recurse
     $projFiles += Get-Item -LiteralPath "$PSScriptRoot\..\Directory.Build.props"
     $projFiles | % {
         $projXml = [xml](Get-Content -LiteralPath $_)
