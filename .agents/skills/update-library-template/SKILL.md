@@ -30,6 +30,20 @@ Conflicts in the following files should always be resolved by keeping the curren
 
 * README.md
 
+### Test framework docs, scripts, and packages
+
+Library.Template's `AGENTS.md`, test docs, and `tools/dotnet-test-cloud.ps1` assume **TUnit** on Microsoft.Testing.Platform.
+Many consumers still use **xunit v3 + MTP**, classic **VSTest xunit**, or hybrid setups (including xunit *extension* libraries such as Xunit.StaFact / Xunit.SkippableFact / Xunit.Combinatorial, whose own tests must stay on xunit).
+
+When merging:
+
+* Prefer the template only where the consumer's prior content was **equivalent**. Do not overwrite repo-specific behavior with template placeholders or TUnit-only defaults.
+* Keep framework-specific **AGENTS.md** (and similar agent/contributor docs): filter syntax (`--filter-method` / `--filter-not-trait` vs `--treenode-filter`), FailsInCloudTest / FailureExpected exclusions, real test project paths, and `--framework` TFMs that match the repo's test projects.
+* Keep bespoke **`tools/dotnet-test-cloud.ps1`** logic when it is not equivalent to the template (per-project loops, NonTUnit vs TUnit splits, MultiRID/NativeAOT discovery, hang/blame timeouts, coverage naming, custom filters). Graft genuine template improvements (for example `IncludeNativeAOT` + `Get-NativeAOTTestProjects.ps1`) onto the repo script only when they fit.
+* Do not add unused template **PackageVersion** entries (`TUnit.Engine`, `xunit.v3.assert.aot`, etc.) to `Directory.Packages.props` unless a project in the repo actually references them (or Central Package Management truly requires them).
+* Preserve repo-specific Azure Pipelines / GitHub Actions build steps that the template lacks equivalents for (for example full **MSBuild@1** on Windows for `net35`, `IncompleteBuild` as `warnNotAsError`).
+
+
 ### Deleted files
 
 Very typically, when the incoming change is to a file that was deleted locally, the correct resolution is to re-delete the file.
