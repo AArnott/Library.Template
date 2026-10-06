@@ -132,7 +132,10 @@ The configuration uses:
   The service principal object ID from Entra **Enterprise applications** is distinct
   from the app registration object ID above.
 
-Fork PRs and Dependabot runs skip authentication and retain anonymous restore behavior;
+Authentication is enabled only for repositories owned by the `microsoft` organization,
+because this Entra tenant requires enterprise-issued GitHub assertions.
+Repositories owned by other accounts (including this template), fork PRs, and Dependabot
+runs skip authentication and retain anonymous restore behavior;
 new upstream dependencies may still need to be ingested by a trusted run first.
 Do not switch this workflow to `pull_request_target` to give untrusted PR code credentials.
 Repositories based on this template must configure their own trusted subjects and, if necessary,

@@ -25,8 +25,9 @@ jobs:
           args: --do-not-warn-for-redirect-to https://learn.microsoft.com*,https://dotnet.microsoft.com/*,https://dev.azure.com/*,https://app.codecov.io/* -p docfx -i https://aka.ms/onboardsupport,https://aka.ms/spot,https://msrc.microsoft.com/*,https://www.microsoft.com/msrc*,https://microsoft.com/msrc*,https://www.npmjs.com/package/*,https://get.dot.net/
       - name: Authenticate to Azure with GitHub OIDC
         id: azure-login
+        # This tenant requires enterprise-issued assertions. Other owners restore anonymously.
         # Fork and Dependabot PRs run without write permissions, including id-token.
-        if: github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        if: github.repository_owner == 'microsoft' && github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
         with:
           client-id: 2799af29-63f3-404f-bdcf-67ff9c70abc9
