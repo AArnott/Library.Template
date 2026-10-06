@@ -45,6 +45,7 @@ When merging:
 
 ### Traversal coverage, placeholders, and non-test projects
 
+* `GitVersionBaseDirectory` in the template's `Directory.Build.props` assumes the repo has exactly one `version.json`. If the repo has nested `version.json` files (typically for analyzer or source generator projects that need `assemblyVersion` precision `revision`), the repo has deliberately removed or must not have that property. Never re-add it during a merge; keep the repo's first-parent state.
 * `init.ps1` and CI restore and build only `tools/dirs.proj`. If the solution contains projects outside `src` and `test` (for example `samples/` or `benchmark/`), add them to `tools/dirs.proj` (with `Pack="false"` and/or `Publish="false"` as appropriate) so they are still restored and compiled. Otherwise `dotnet format --no-restore` and sample regressions go unnoticed.
 * `test/Directory.Build.props` marks every project under `test` as a test project. Set `<IsTestProject>false</IsTestProject>` on non-test executables there (for example BenchmarkDotNet projects) so they are not run by `dotnet test` or picked up by NativeAOT test discovery.
 * After the merge, search `CONTRIBUTING.md`, `AGENTS.md`, and source headers for template placeholders such as `test/Library.Tests/Library.Tests.csproj`, `COMPANY-PLACEHOLDER`, and the template's `net8.0` examples, and replace them with the repo's real project paths, metadata, and NativeAOT-enabled frameworks.
