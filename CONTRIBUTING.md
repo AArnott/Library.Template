@@ -134,8 +134,10 @@ The configuration uses:
 
 Authentication is enabled only for repositories owned by the `microsoft` organization,
 because this Entra tenant requires enterprise-issued GitHub assertions.
-Repositories owned by other accounts (including this template), fork PRs, and Dependabot
-runs skip authentication and retain anonymous restore behavior;
+Same-repository dependency update PRs, including Renovate and Dependabot, authenticate
+using the job's explicit `id-token: write` permission.
+Repositories owned by other accounts (including this template) and fork PRs
+skip authentication and retain anonymous restore behavior;
 new upstream dependencies may still need to be ingested by a trusted run first.
 Do not switch this workflow to `pull_request_target` to give untrusted PR code credentials.
 Repositories based on this template must configure their own trusted subjects and, if necessary,
