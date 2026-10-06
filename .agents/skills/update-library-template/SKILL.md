@@ -43,6 +43,13 @@ When merging:
 * Do not add unused template **PackageVersion** entries (`TUnit.Engine`, `xunit.v3.assert.aot`, etc.) to `Directory.Packages.props` unless a project in the repo actually references them (or Central Package Management truly requires them).
 * Preserve repo-specific Azure Pipelines / GitHub Actions build steps that the template lacks equivalents for (for example full **MSBuild@1** on Windows for `net35`, `IncompleteBuild` as `warnNotAsError`).
 
+### Traversal coverage, placeholders, and non-test projects
+
+* `init.ps1` and CI restore and build only `tools/dirs.proj`. If the solution contains projects outside `src` and `test` (for example `samples/` or `benchmark/`), add them to `tools/dirs.proj` (with `Pack="false"` and/or `Publish="false"` as appropriate) so they are still restored and compiled. Otherwise `dotnet format --no-restore` and sample regressions go unnoticed.
+* `test/Directory.Build.props` marks every project under `test` as a test project. Set `<IsTestProject>false</IsTestProject>` on non-test executables there (for example BenchmarkDotNet projects) so they are not run by `dotnet test` or picked up by NativeAOT test discovery.
+* After the merge, search `CONTRIBUTING.md`, `AGENTS.md`, and source headers for template placeholders such as `test/Library.Tests/Library.Tests.csproj`, `COMPANY-PLACEHOLDER`, and the template's `net8.0` examples, and replace them with the repo's real project paths, metadata, and NativeAOT-enabled frameworks.
+* If the repo already publishes NativeAOT tests through its own mechanism (for example `MultiRIDProjectReference` items in `test/dirs.proj`), either keep that mechanism and disable the template's discovery (`PublishNativeAOTTests=false`, and drop or don't wire up `Get-NativeAOTTestProjects.ps1`), or replace it fully. Don't leave both half-wired, and update `CONTRIBUTING.md` to describe whichever one the repo actually uses.
+
 
 ### Deleted files
 
