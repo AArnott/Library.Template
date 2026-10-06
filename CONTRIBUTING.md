@@ -90,7 +90,9 @@ The `.github/workflows/docs.yml` GitHub Actions workflow publishes the content o
 The `.github/workflows/docs_validate.yml` workflow uses GitHub OIDC to authenticate
 as the **azure-public/vside package pull** Entra application before `init.ps1` restores packages.
 It requests an Azure DevOps access token and supplies it through
-`NuGetPackageSourceCredentials_msft_consumption`, matching the source in `nuget.config`.
+`NuGetPackageSourceCredentials_<source name>` for each Azure Artifacts source in
+`nuget.config`, including repositories that use a different name such as
+`msft_consumption_public`.
 No client secret or PAT is required, and no credentials are written to `nuget.config`.
 
 Run `tools/Configure-GitHubOidc.ps1` from the repository to configure GitHub's immutable
