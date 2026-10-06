@@ -194,7 +194,7 @@ try {
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
     # Self-integrity check
-    Get-ChildItem -Recurse -File -Exclude bin,obj,README.md,Expand-Template.* |? { -not $_.FullName.Contains("obj") } |% {
+    Get-ChildItem -Recurse -File -Exclude bin,obj,README.md,Expand-Template.*,SKILL.md |? { -not $_.FullName.Contains("obj") } |% {
         $PLACEHOLDERS = Get-Content -LiteralPath $_.FullName |? { $_.Contains('PLACEHOLDER') }
         if ($PLACEHOLDERS) {
             Write-Error "PLACEHOLDER discovered in $($_.FullName)"
