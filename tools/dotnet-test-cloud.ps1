@@ -75,6 +75,8 @@ if ($isMTP) {
         ,'--crash-report-if-supported'
     )
     $mtpArgs = @(
+        ,'--treenode-filter'
+        ,'/*/*/*/*[TestCategory!=FailsInCloudTest]'
         ,'--diagnostic'
         ,'--diagnostic-output-directory',$testLogs
         ,'--diagnostic-verbosity','Information'
@@ -117,6 +119,8 @@ if ($isMTP) {
             }
 
             $nativeAotArgs = @(
+                ,'--treenode-filter'
+                ,'/*/*/*/*[TestCategory!=FailsInCloudTest]'
                 ,'--diagnostic'
                 ,'--diagnostic-output-directory',$testLogs
                 ,'--diagnostic-verbosity','Information'
