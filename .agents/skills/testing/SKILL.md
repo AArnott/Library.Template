@@ -11,6 +11,8 @@ user-invocable: false
 
 ## Running Tests
 
+To run a specific test project, change to that project's directory first; the commands below then target it without hard-coding its path.
+
 **Run all tests**:
 ```bash
 dotnet test --no-build -c Release
