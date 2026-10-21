@@ -6,6 +6,11 @@ do-not-warn-for-redirect-to = [
 ]
 ignore-path = ["docfx"]
 ignore-links = [
+    "https://aka.ms/onboardsupport",
+    "https://aka.ms/spot",
+    "https://msrc.microsoft.com/*",
+    "https://www.microsoft.com/msrc*",
+    "https://microsoft.com/msrc*",
     "https://www.npmjs.com/package/*",
     "https://get.dot.net/",
 ]
