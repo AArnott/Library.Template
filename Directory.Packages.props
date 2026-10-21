@@ -19,9 +19,9 @@
     <PackageVersion Include="Microsoft.Testing.Extensions.Telemetry" Version="$(MicrosoftTestingPlatformVersion)" />
     <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="$(MicrosoftTestingPlatformVersion)" />
     <PackageVersion Include="Microsoft.VisualStudio.Internal.MicroBuild.NonShipping" Version="$(MicroBuildVersion)" />
-    <PackageVersion Include="TUnit.Engine" Version="1.65.68" />
-    <PackageVersion Include="xunit.v3.assert" Version="4.0.1" />
-    <PackageVersion Include="xunit.v3.assert.aot" Version="4.0.1" />
+    <PackageVersion Include="TUnit.Engine" Version="1.75.0" />
+    <PackageVersion Include="xunit.v3.assert" Version="4.0.2" />
+    <PackageVersion Include="xunit.v3.assert.aot" Version="4.0.2" />
   </ItemGroup>
   <ItemGroup>
     <!-- Put repo-specific GlobalPackageReference items in this group. -->
@@ -33,6 +33,6 @@
     <!-- The condition works around https://github.com/dotnet/sdk/issues/44951 -->
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.10.94" Condition="!('$(TF_BUILD)'=='true' and '$(dotnetformat)'=='true')" />
     <GlobalPackageReference Include="PolySharp" Version="1.16.0" />
-    <GlobalPackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556" />
+    <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.3.1-beta" />
   </ItemGroup>
 </Project>
