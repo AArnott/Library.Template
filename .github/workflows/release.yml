@@ -13,6 +13,8 @@ run-name: ${{ github.ref_name }}
 
 jobs:
   release:
+    # Windows is required: the `sign` tool calls kernel32 SetDllDirectoryW and fails on Linux.
+    # When merging from main (e.g. an ubuntu version bump), keep windows here.
     runs-on: windows-2025
     environment: Publishing
     env:
@@ -121,6 +123,8 @@ jobs:
         user: ${{ secrets.NUGET_USER }}
 
     - name: 🚀 Push NuGet packages
+      # Backslashes are required here: on Windows, dotnet nuget push does not expand the wildcard with forward slashes.
+      # Keep backslashes when merging from main, which uses forward slashes for Linux.
       run: dotnet nuget push ${{ runner.temp }}\deployables\*.nupkg --source https://api.nuget.org/v3/index.json -k '${{ steps.nuget-login.outputs.NUGET_API_KEY }}'
 
     - name: 💽 Upload artifacts to release
