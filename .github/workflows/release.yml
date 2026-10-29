@@ -13,6 +13,8 @@ run-name: ${{ github.ref_name }}
 
 jobs:
   release:
+    # Windows is required: the `sign` tool calls kernel32 SetDllDirectoryW and fails on Linux.
+    # When merging from main (e.g. an ubuntu version bump), keep windows here.
     runs-on: windows-2025
     environment: Publishing
     env:
