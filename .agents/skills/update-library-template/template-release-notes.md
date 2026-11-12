@@ -95,6 +95,10 @@ If aspects of the library or tests make successful builds, publish or test runs 
 
 .NET 8 and 9 are no longer supported by Microsoft.
 All projects in the repo that target these runtimes should be updated to target .NET 10.
+When retargeting, search source code for `#if` expressions that mention `NET8`, `NET9` or `NET10` and simplify them as follows:
+* Assume exact .NET 8 and 9 checks evaluate to false, since these will never be targets and simplify the expressions as such.
+* Simplify any check for `NET10_0_OR_LATER` to just `NET` since all supported .NET targets are always .NET 10 or later.
+* Remove any code rendered dead by these changes.
 
 ## Docfx homepage shares the docs navigation
 
