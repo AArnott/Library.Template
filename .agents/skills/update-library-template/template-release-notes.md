@@ -95,3 +95,13 @@ If aspects of the library or tests make successful builds, publish or test runs 
 
 .NET 8 and 9 are no longer supported by Microsoft.
 All projects in the repo that target these runtimes should be updated to target .NET 10.
+
+## Docfx homepage shares the docs navigation
+
+`docfx/index.md` is a normal documentation page and the site homepage. It no longer uses `_layout: landing`, which hid the left sidebar. `docfx/docs/toc.yml` lists that page first as Overview, ahead of Features and Getting Started, with `href: ../index.md`. The top-level menu stays Docs and API.
+
+When merging into a repo that already customized the landing page or the docs table of contents:
+
+* Keep the repo's own pitch, install snippet, and feature highlights in `docfx/index.md`.
+* Drop `_layout: landing` and any "Click Docs across the top to get started" line so `/` shows the same top navbar and left docs sidebar as the other docs pages.
+* Insert Overview at the top of `docfx/docs/toc.yml` if it is missing, and keep the repo's existing entries after it.
