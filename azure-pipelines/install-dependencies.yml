@@ -4,7 +4,7 @@ parameters:
   default: ''
 - name: needsAzurePublicFeeds
   type: boolean
-  default: true # If nuget.config pulls from the azure-public account, we need to authenticate when building on the devdiv account.
+  default: false # If nuget.config pulls from the azure-public account, we need to authenticate when building on the devdiv account.
 
 steps:
 - ${{ if and(parameters.needsAzurePublicFeeds, eq(variables['system.collectionId'], '011b8bdf-6d56-4f87-be0d-0092136884d9')) }}:
